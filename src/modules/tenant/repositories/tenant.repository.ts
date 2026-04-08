@@ -1,35 +1,32 @@
+import { PrismaService } from "@/modules/prisma/service/prisma.service";
+import { Injectable } from "@nestjs/common";
+
+@Injectable()
 export class TenantRepository {
-    private readonly tenants: any[] = [];
+    constructor(private readonly prisma: PrismaService) { }
 
     async findById(id: string): Promise<any> {
-        return this.tenants.find((tenant) => tenant.id === id) ?? null;
+        return this.prisma.tenant.findUnique({ where: { id } });
     }
 
     async findByName(name: string): Promise<any> {
-        return this.tenants.find((tenant) => tenant.name === name) ?? null;
+        return this.prisma.tenant.findUnique({ where: { name } });
     }
 
     async create(dto: any): Promise<any> {
-        const created = { id: `${(dto.name).toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`, ...dto };
-        this.tenants.push(created);
-        return created;
+        return this.prisma.tenant.create({ data: dto });
     }
 
     async findAll(): Promise<any[]> {
-        return this.tenants;
+        return this.prisma.tenant.findMany();
     }
 
     async update(id: string, dto: any): Promise<any> {
-        const index = this.tenants.findIndex((tenant) => tenant.id === id);
-        if (index === -1) return null;
-        this.tenants[index] = { ...this.tenants[index], ...dto };
-        return this.tenants[index];
+        return this.prisma.tenant.update({ where: { id }, data: dto });
     }
 
     async delete(id: string): Promise<boolean> {
-        const index = this.tenants.findIndex((tenant) => tenant.id === id);
-        if (index === -1) return false;
-        this.tenants.splice(index, 1);
-        return true;
+        const deleted = await this.prisma.tenant.delete({ where: { id } });
+        return !!deleted;
     }
 }

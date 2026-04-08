@@ -1,9 +1,9 @@
 import { Controller, Get, Param } from "@nestjs/common";
-import { TenantService } from "../services/tenant.service";
+import { TenantService } from "@/modules/tenant/services/tenant.service";
 
 @Controller("tenant")
 export class UserTenantController {
-    constructor (private readonly tenantService: TenantService) { }
+    constructor(private readonly tenantService: TenantService) { }
 
     @Get()
     getTenant(@Param(":id") id: string) {

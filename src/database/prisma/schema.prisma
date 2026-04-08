@@ -4,8 +4,9 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/database/prisma/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../src/database/prisma/generated/prisma"
+  moduleFormat = "cjs"
 }
 
 datasource db {
@@ -13,34 +14,38 @@ datasource db {
 }
 
 model Tenant {
-  id           String   @id @default(uuid())
-  name         String
-  apiKey       String   @unique
-  email        String   @unique
-  plan         String   @default("starter")  // starter, professional, enterprise
-  status       String   @default("active")   // active, suspended, deleted
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                String   @id @default(uuid())
+  name              String   @unique
+  themeName         String
+  metaTitle         String?
+  metaDescription   String?
+  phone             String?
+  phoneDisplay      String?
+  instagram         String?
+  whatsappMessage   String?
+  footerDescription String?
+  footerNotice      String?
+  status            String   @default("active")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   // Relations
-  products     Product[]
+  products Product[]
 
-  // Indexes
-  @@index([apiKey])
   @@index([status])
 }
 
 model Product {
-  id           String   @id @default(uuid())
-  tenantId     String
-  name         String
-  description  String?
-  price        Float
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id          String   @id @default(uuid())
+  tenantId    String
+  name        String
+  description String?
+  price       Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // Relations
-  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id])
 
   // Indexes
   @@index([tenantId])

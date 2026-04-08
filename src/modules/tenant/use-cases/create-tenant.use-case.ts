@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { TenantRepository } from '../repositories/tenant.repository';
-import { CreateTenantDto } from '../dto/create-tenant.dto';
+import { TenantRepository } from '@/modules/tenant/repositories/tenant.repository';
+import { CreateTenantDto } from '@/modules/tenant/dto/create-tenant.dto';
 
 @Injectable()
 export class CreateTenantUseCase {

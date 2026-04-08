@@ -11,7 +11,7 @@ export class CreateTenantDto {
     @IsNotEmpty()
     @IsString()
     themeName!: string;
-    
+
     @ApiProperty({ description: 'Meta título para SEO', example: 'Template Store | E-commerce Base' })
     @IsString()
     metaTitle?: string;
@@ -19,7 +19,7 @@ export class CreateTenantDto {
     @ApiProperty({ description: 'Meta descrição para SEO', example: 'Seu e-commerce premium pronto para vendas.' })
     @IsString()
     metaDescription?: string;
-    
+
     @ApiProperty({ description: 'Número de telefone para contato', example: '5582991245437' })
     @IsString()
     phone?: string;
@@ -27,7 +27,7 @@ export class CreateTenantDto {
     @ApiProperty({ description: 'Telefone para exibição', example: '(82) 99124-5437' })
     @IsString()
     phoneDisplay?: string;
-    
+
     @ApiProperty({ description: 'Instagram do tenant', example: '@suamarcAqui' })
     @IsString()
     instagram?: string;
