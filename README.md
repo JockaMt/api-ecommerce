@@ -1,59 +1,98 @@
 # API Ecommerce
 
-API para cadastro e gerenciamento de itens de e-commerce em modelo multi-tenant.
+API em NestJS para um SaaS de e-commerce multi-tenant.
 
-## Requisitos funcionais
+Estado atual: base administrativa para cadastro e listagem de tenants, com documentacao Swagger habilitada.
 
-### Contexto
+## Stack
 
-Esta API deve permitir o cadastro e gerenciamento de itens de e-commerce em um modelo multi-tenant, com segregacao por identificador de e-commerce.
+- Node.js + NestJS 11
+- TypeScript
+- class-validator / class-transformer
+- Swagger via @nestjs/swagger
+- Prisma instalado (ainda nao integrado no fluxo HTTP atual)
 
-### RF-01 - Cadastro de item
+## Arquitetura Atual
 
-- A API deve permitir cadastrar um item informando, no minimo: `nome`, `descricao`, `preco`, `estoque` e `ecommerceId`.
-- O item criado deve receber um identificador unico.
+Fluxo principal implementado no modulo admin:
 
-### RF-02 - Consulta de itens por e-commerce
+Controller -> Service -> Use Case -> Repository
 
-- A API deve permitir listar itens filtrando obrigatoriamente por `ecommerceId`.
-- A resposta nao deve incluir itens de outros e-commerces.
+Arquivos principais:
 
-### RF-03 - Consulta de item por ID
+- src/app.module.ts
+- src/main.ts
+- src/config/swagger.config.ts
+- src/modules/admin/controllers/admin.controller.ts
+- src/modules/admin/controllers/tenant.contoller.ts
+- src/modules/admin/services/admin.service.ts
+- src/modules/admin/use-cases/create-tenant.use-case.ts
+- src/modules/admin/repositories/tenant.repository.ts
+- src/modules/admin/dto/create-tenant.dto.ts
 
-- A API deve permitir consultar um item especifico por `itemId`, respeitando o escopo do `ecommerceId`.
-- Se o item nao pertencer ao `ecommerceId` informado, a API deve responder como nao encontrado.
+## Rotas Disponiveis
 
-### RF-04 - Edicao de item
+Base URL local: http://localhost:3000
 
-- A API deve permitir editar dados de um item existente (`nome`, `descricao`, `preco`, `estoque`) dentro do mesmo `ecommerceId`.
-- A operacao de edicao deve exigir autenticacao.
+1. GET /admin
+- Retorna metadados do modulo admin e rotas expostas.
 
-### RF-05 - Remocao de item
+2. GET /admin/tenants
+- Lista tenants cadastrados.
 
-- A API deve permitir remover um item existente dentro do mesmo `ecommerceId`.
-- A operacao de remocao deve exigir autenticacao.
+3. POST /admin/tenants
+- Cria um novo tenant.
 
-### RF-06 - Controle de autenticacao
+Exemplo de body:
 
-- As operacoes de escrita (`cadastrar`, `editar` e `remover`) devem exigir usuario autenticado.
-- Requisicoes sem autenticacao valida devem ser rejeitadas com erro de acesso nao autorizado.
+```json
+{
+	"name": "Template Store",
+	"themeName": "PRO",
+	"metaTitle": "Template Store | E-commerce Base",
+	"metaDescription": "Seu e-commerce premium pronto para vendas.",
+	"phone": "5582991245437",
+	"phoneDisplay": "(82) 99124-5437",
+	"instagram": "@suamarca",
+	"whatsappMessage": "Ola, gostaria de saber mais os produtos!",
+	"footerDescription": "Sua loja de demonstracao definitiva para atrair clientes.",
+	"footerNotice": "Feito com paixao. Envio para todo o Brasil."
+}
+```
 
-### RF-07 - Isolamento de dados entre e-commerces
+## Swagger
 
-- Nenhuma operacao deve permitir acesso ou alteracao de itens de outro `ecommerceId`.
-- O `ecommerceId` deve ser tratado como criterio obrigatorio de segregacao em todas as operacoes.
+Swagger habilitado em:
 
-## Como executar
+- http://localhost:3000/docs
+
+Configuracao em src/config/swagger.config.ts.
+
+## Como Rodar
 
 ```bash
 npm install
+npm run start:dev
+```
+
+Ou em modo normal:
+
+```bash
 npm run start
 ```
 
-## Testes
+## Scripts Uteis
 
 ```bash
+npm run build
+npm run lint
 npm run test
 npm run test:e2e
 npm run test:cov
 ```
+
+## Observacoes Importantes
+
+- O repositorio de tenants atual esta em memoria (array local), sem persistencia real.
+- Prisma ja esta no projeto, mas a camada HTTP ainda nao usa banco de dados.
+- O arquivo tenant.contoller.ts possui typo no nome do arquivo (contoller). O codigo funciona, mas o ideal e padronizar para tenant.controller.ts.
