@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { TenantRepository } from '@/modules/admin/repositories/tenant.repository';
+import { TenantRepository } from '../repositories/tenant.repository';
 
 @Injectable()
 export class DeleteTenantUseCase {

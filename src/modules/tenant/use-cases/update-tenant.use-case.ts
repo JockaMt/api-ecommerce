@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { TenantRepository } from "../repositories/tenant.repository";
 
 @Injectable()
@@ -9,7 +9,7 @@ export class UpdateTenantUseCase {
 
         const tenant = await this.tenantRepository.findById(id);
         if (!tenant) {
-            throw new Error('Tenant não encontrado');
+            throw new NotFoundException('Tenant não encontrado');
         }
 
         return this.tenantRepository.update(id, dto);
