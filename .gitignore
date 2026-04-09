@@ -59,3 +59,7 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 dev.db
 *.md
 !README.md
+
+/src/generated/prisma
+
+/generated/prisma
