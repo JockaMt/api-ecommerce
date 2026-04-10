@@ -36,13 +36,21 @@ model Tenant {
 }
 
 model Product {
-  id          String   @id @default(uuid())
-  tenantId    String
-  name        String
-  description String?
-  price       Float
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id            String   @id @default(uuid())
+  tenantId      String
+  name          String
+  category      String
+  description   String?
+  price         Float
+  priceOriginal Float?
+  badge         String?
+  image         String?
+  rating        Float?
+  reviews       Int?
+  stock         Int
+  highlight     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   // Relations
   tenant Tenant @relation(fields: [tenantId], references: [id])

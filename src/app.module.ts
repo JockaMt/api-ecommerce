@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AdminModule } from '@/modules/admin/admin.module';
 import { TenantModule } from '@/modules/tenant/tenant.module';
 import { PrismaModule } from '@/modules/prisma/prisma.module';
+import { ProductModule } from './modules/products/product.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { PrismaModule } from '@/modules/prisma/prisma.module';
     }),
     AdminModule,
     TenantModule,
+    ProductModule,
     PrismaModule
   ],
   controllers: [],

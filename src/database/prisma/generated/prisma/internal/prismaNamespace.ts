@@ -613,8 +613,16 @@ export const ProductScalarFieldEnum = {
   id: 'id',
   tenantId: 'tenantId',
   name: 'name',
+  category: 'category',
   description: 'description',
   price: 'price',
+  priceOriginal: 'priceOriginal',
+  badge: 'badge',
+  image: 'image',
+  rating: 'rating',
+  reviews: 'reviews',
+  stock: 'stock',
+  highlight: 'highlight',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -669,6 +677,13 @@ export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, '
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 /**
