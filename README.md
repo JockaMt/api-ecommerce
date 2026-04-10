@@ -1,49 +1,100 @@
-# API Ecommerce
+# 🛒 API Ecommerce
 
-API em NestJS para um SaaS de e-commerce multi-tenant.
+Uma API em NestJS para um SaaS de e-commerce multi-tenant.
 
-Estado atual: base administrativa para cadastro e listagem de tenants, com documentacao Swagger habilitada.
+## 🚀 Estrutura do Projeto
 
-## Stack
+```text
+src/
+├── app.module.ts                     # Modulo raiz da aplicacao
+├── main.ts                           # Bootstrap da API
+├── config/
+│   └── swagger.config.ts             # Configuracao do Swagger
+├── database/
+│   └── prisma/
+│       ├── schema.prisma             # Schema do banco
+│       ├── migrations/               # Migracoes Prisma
+│       └── generated/                # Cliente gerado do Prisma
+└── modules/
+		├── admin/
+		│   ├── controllers/
+		│   │   └── admin.controller.ts
+		│   ├── services/
+		│   └── admin.module.ts
+		├── tenant/
+		│   ├── controllers/
+		│   │   ├── tenant.controller.ts
+		│   │   ├── user-tenant.controller.ts
+		│   │   └── set-tenant-theme.controller.ts
+		│   ├── dto/
+		│   ├── repositories/
+		│   ├── services/
+		│   ├── use-cases/
+		│   └── tenant.module.ts
+		├── products/
+		│   ├── controllers/
+		│   ├── dto/
+		│   ├── repositories/
+		│   ├── services/
+		│   └── use-cases/
+		└── prisma/
+				├── prisma.module.ts
+				└── service/
+```
 
-- Node.js + NestJS 11
+## 🛠️ Tecnologias
+
+- NestJS 11
 - TypeScript
+- Prisma ORM + SQLite
 - class-validator / class-transformer
 - Swagger via @nestjs/swagger
-- Prisma instalado (ainda nao integrado no fluxo HTTP atual)
+- Jest + Supertest
 
-## Arquitetura Atual
+## 📦 Funcionalidades
 
-Fluxo principal implementado no modulo admin:
+- ✅ Endpoint de status/metadata administrativo
+- ✅ CRUD de tenants no contexto admin
+- ✅ Consulta de tenant no contexto de usuario
+- ✅ Criacao/atualizacao de tema por tenant
+- ✅ Consulta de tema por tenant
+- ✅ Criacao e listagem de produtos por tenant
+- ✅ Documentacao Swagger em /docs
+
+## 🧱 Arquitetura
+
+O fluxo principal segue o padrao:
 
 Controller -> Service -> Use Case -> Repository
 
-Arquivos principais:
+Com separacao por modulos (admin, tenant, products, prisma) para manter regras de negocio e acesso a dados desacoplados.
 
-- src/app.module.ts
-- src/main.ts
-- src/config/swagger.config.ts
-- src/modules/admin/controllers/admin.controller.ts
-- src/modules/admin/controllers/tenant.contoller.ts
-- src/modules/admin/services/admin.service.ts
-- src/modules/admin/use-cases/create-tenant.use-case.ts
-- src/modules/admin/repositories/tenant.repository.ts
-- src/modules/admin/dto/create-tenant.dto.ts
-
-## Rotas Disponiveis
+## 🔌 Rotas Disponiveis
 
 Base URL local: http://localhost:3000
 
-1. GET /admin
-- Retorna metadados do modulo admin e rotas expostas.
+### Admin
 
-2. GET /admin/tenants
-- Lista tenants cadastrados.
+- GET /admin
+- GET /admin/tenants
+- POST /admin/tenants
+- PUT /admin/tenants/:id
+- DELETE /admin/tenants/:id
 
-3. POST /admin/tenants
-- Cria um novo tenant.
+### Tenant
 
-Exemplo de body:
+- GET /tenant
+- POST /:tenantId/theme
+- GET /:tenantId/theme
+
+### Produtos
+
+- GET /products/:tenantId/:name
+- GET /products/:tenantId
+- GET /products/:tenantId/:category
+- POST /products
+
+Exemplo de body para criar tenant:
 
 ```json
 {
@@ -60,28 +111,25 @@ Exemplo de body:
 }
 ```
 
-## Swagger
+## 📚 Swagger
 
-Swagger habilitado em:
+- URL: http://localhost:3000/docs
+- Configuracao: src/config/swagger.config.ts
 
-- http://localhost:3000/docs
-
-Configuracao em src/config/swagger.config.ts.
-
-## Como Rodar
+## 🚀 Como Executar
 
 ```bash
+# Instalar dependencias
 npm install
+
+# Desenvolvimento
 npm run start:dev
-```
 
-Ou em modo normal:
-
-```bash
+# Modo normal
 npm run start
 ```
 
-## Scripts Uteis
+## 🧪 Scripts Uteis
 
 ```bash
 npm run build
@@ -91,8 +139,14 @@ npm run test:e2e
 npm run test:cov
 ```
 
-## Observacoes Importantes
+## 🔧 Configuracao
 
-- O repositorio de tenants atual esta em memoria (array local), sem persistencia real.
-- Prisma ja esta no projeto, mas a camada HTTP ainda nao usa banco de dados.
-- O arquivo tenant.contoller.ts possui typo no nome do arquivo (contoller). O codigo funciona, mas o ideal e padronizar para tenant.controller.ts.
+- Path alias: @/* -> ./src/*
+- TypeScript com strictNullChecks habilitado
+- Swagger com Bearer Auth configurado no DocumentBuilder
+
+## 📁 Observacoes Importantes
+
+- O projeto utiliza Prisma com schema e migracoes em src/database/prisma.
+- O endpoint GET /tenant atualmente esta com @Param sem segmento de rota, o que pode exigir ajuste para GET /tenant/:id ou uso de header/claim.
+- Existem duas rotas de GET em products com assinatura semelhante (:tenantId/:name e :tenantId/:category); dependendo da ordem e da regra esperada, pode haver ambiguidade de match.
