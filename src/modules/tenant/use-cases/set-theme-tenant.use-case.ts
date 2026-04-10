@@ -6,13 +6,7 @@ import { TenantRepository } from "@/modules/tenant/repositories/tenant.repositor
 export class SetThemeTenantUseCase {
     constructor(private readonly tenantRepository: TenantRepository) { }
 
-    async execute(tenantId: string, theme: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
-        const existingTheme = await this.tenantRepository.getTheme(tenantId);
-
-        if (existingTheme) {
-            return this.tenantRepository.updateTheme(existingTheme.id, theme);
-        } else {
-            return this.tenantRepository.createTheme({ ...theme, tenantId });
-        }
+    async execute(tenantId: string, dto: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
+        return this.tenantRepository.createTheme({ ...dto, tenantId });
     }
 }

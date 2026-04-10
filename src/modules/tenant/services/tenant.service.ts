@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTenantUseCase, DeleteTenantUseCase, UpdateTenantUseCase } from "@/modules/tenant/use-cases";
 import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
-import { UpdateTenantDto, CreateTenantDto } from "@/modules/tenant/dto";
+import { UpdateTenantDto, CreateTenantDto, CreateTenantThemeDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
 
 @Injectable()
 export class TenantService {
@@ -30,5 +30,13 @@ export class TenantService {
 
     deleteTenant(id: string) {
         return this.deleteTenantUseCase.execute(id);
+    }
+
+    setTheme(tenantId: string, dto: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
+        return this.tenantRepository.setTheme(tenantId, dto);
+    }
+
+    getTheme(tenantId: string) {
+        return this.tenantRepository.getTheme(tenantId);
     }
 }

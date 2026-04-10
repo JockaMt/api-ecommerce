@@ -1,5 +1,6 @@
 import { PrismaService } from "@/modules/prisma/service/prisma.service";
 import { Injectable } from "@nestjs/common";
+import { CreateTenantThemeDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
 
 @Injectable()
 export class TenantRepository {
@@ -9,12 +10,12 @@ export class TenantRepository {
         return this.prisma.theme.findFirst({ where: { tenantId } });
     }
 
-    async createTheme(dto: any): Promise<any> {
-        return this.prisma.theme.create({ data: dto });
+    async setTheme(tenantId: string, theme: CreateTenantThemeDTO | UpdateTenantThemeDTO): Promise<any> {
+        return this.prisma.theme.update({ where: { tenantId }, data: theme });
     }
 
-    async updateTheme(id: string, dto: any): Promise<any> {
-        return this.prisma.theme.update({ where: { id }, data: dto });
+    async createTheme(dto: any): Promise<any> {
+        return this.prisma.theme.create({ data: dto });
     }
 
     async findById(id: string): Promise<any> {

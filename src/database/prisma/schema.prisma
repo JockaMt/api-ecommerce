@@ -61,7 +61,7 @@ model Product {
 
 model Theme {
   id            String @id @default(uuid())
-  tenantId      String
+  tenantId      String @unique
   primary       String
   primaryHover  String
   secondary     String

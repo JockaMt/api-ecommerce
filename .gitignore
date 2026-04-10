@@ -64,3 +64,6 @@ dev.db
 *.db
 *.db-shm
 *.db-wal
+
+*.md
+!README.md
