@@ -49,3 +49,8 @@ export type Tenant = Prisma.TenantModel
  * 
  */
 export type Product = Prisma.ProductModel
+/**
+ * Model Theme
+ * 
+ */
+export type Theme = Prisma.ThemeModel

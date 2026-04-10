@@ -52,7 +52,8 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Tenant: 'Tenant',
-  Product: 'Product'
+  Product: 'Product',
+  Theme: 'Theme'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -107,6 +108,25 @@ export const ProductScalarFieldEnum = {
 } as const
 
 export type ProductScalarFieldEnum = (typeof ProductScalarFieldEnum)[keyof typeof ProductScalarFieldEnum]
+
+
+export const ThemeScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  primary: 'primary',
+  primaryHover: 'primaryHover',
+  secondary: 'secondary',
+  secondaryDark: 'secondaryDark',
+  surface: 'surface',
+  text: 'text',
+  textMuted: 'textMuted',
+  border: 'border',
+  gradientStart: 'gradientStart',
+  gradientMid: 'gradientMid',
+  gradientEnd: 'gradientEnd'
+} as const
+
+export type ThemeScalarFieldEnum = (typeof ThemeScalarFieldEnum)[keyof typeof ThemeScalarFieldEnum]
 
 
 export const SortOrder = {

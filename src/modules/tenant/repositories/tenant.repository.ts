@@ -5,6 +5,18 @@ import { Injectable } from "@nestjs/common";
 export class TenantRepository {
     constructor(private readonly prisma: PrismaService) { }
 
+    async getTheme(tenantId: string): Promise<any> {
+        return this.prisma.theme.findFirst({ where: { tenantId } });
+    }
+
+    async createTheme(dto: any): Promise<any> {
+        return this.prisma.theme.create({ data: dto });
+    }
+
+    async updateTheme(id: string, dto: any): Promise<any> {
+        return this.prisma.theme.update({ where: { id }, data: dto });
+    }
+
     async findById(id: string): Promise<any> {
         return this.prisma.tenant.findUnique({ where: { id } });
     }
