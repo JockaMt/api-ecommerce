@@ -3,11 +3,11 @@ import { ProductService } from "@/modules/products/services/product.service";
 import { CreateProductDto } from "../dto/create-product.dto";
 
 
-@Controller("products")
+@Controller(":tenantId/products")
 export class ProductController {
     constructor(private readonly productService: ProductService) { }
 
-    @Get(":tenantId/:name")
+    @Get("/:name")
     getProduct(
         @Param("name") name: string,
         @Param("tenantId") tenantId: string
@@ -15,14 +15,14 @@ export class ProductController {
         return this.productService.getProduct(name, tenantId);
     }
 
-    @Get(":tenantId")
+    @Get("")
     listProducts(
         @Param("tenantId") tenantId: string
     ) {
         return this.productService.listProducts(tenantId);
     }
 
-    @Get(":tenantId/:category")
+    @Get("/:category")
     listProductsByCategory(
         @Param("category") category: string,
         @Param("tenantId") tenantId: string

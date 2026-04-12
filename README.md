@@ -89,10 +89,10 @@ Base URL local: http://localhost:3000
 
 ### Produtos
 
-- GET /products/:tenantId/:name
-- GET /products/:tenantId
-- GET /products/:tenantId/:category
-- POST /products
+- GET /:tenantId/products/:name
+- GET /:tenantId/products
+- GET /:tenantId/products/:category
+- POST /:tenantId/products
 
 Exemplo de body para criar tenant:
 
