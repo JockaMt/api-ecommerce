@@ -32,3 +32,23 @@ export type Product = Prisma.ProductModel
  * 
  */
 export type Theme = Prisma.ThemeModel
+/**
+ * Model Hero
+ * 
+ */
+export type Hero = Prisma.HeroModel
+/**
+ * Model Feature
+ * 
+ */
+export type Feature = Prisma.FeatureModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model contactFields
+ * 
+ */
+export type contactFields = Prisma.contactFieldsModel

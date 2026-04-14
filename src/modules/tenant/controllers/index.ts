@@ -1,3 +1,3 @@
 export * from "./tenant.controller";
 export * from "./user-tenant.controller";
-export * from "./set-tenant-theme.controller";
+export * from "./tenant-theme.controller";

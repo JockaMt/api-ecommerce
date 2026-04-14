@@ -11,4 +11,8 @@
 export type * from './models/Tenant.js'
 export type * from './models/Product.js'
 export type * from './models/Theme.js'
+export type * from './models/Hero.js'
+export type * from './models/Feature.js'
+export type * from './models/User.js'
+export type * from './models/contactFields.js'
 export type * from './commonInputTypes.js'

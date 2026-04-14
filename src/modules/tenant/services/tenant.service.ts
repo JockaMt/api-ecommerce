@@ -1,19 +1,39 @@
 import { Injectable } from "@nestjs/common";
-import { CreateTenantUseCase, DeleteTenantUseCase, UpdateTenantUseCase } from "@/modules/tenant/use-cases";
-import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
-import { UpdateTenantDto, CreateTenantDto, CreateTenantThemeDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
+import {
+    CreateTenantUseCase,
+    DeleteTenantUseCase,
+    UpdateTenantUseCase,
+    GetCurrentTenantUseCase,
+    GetThemeTenantUseCase,
+    SetThemeTenantUseCase,
+    ListTenantUseCase,
+    GetHeroTenantUseCase,
+    GetFeaturesTenantUseCase,
+} from "@/modules/tenant/use-cases";
+import {
+    UpdateTenantDto,
+    CreateTenantDto,
+    CreateTenantThemeDTO,
+    UpdateTenantThemeDTO
+} from "@/modules/tenant/dto";
 
 @Injectable()
 export class TenantService {
     constructor(
         private readonly createTenantUseCase: CreateTenantUseCase,
-        private readonly tenantRepository: TenantRepository,
         private readonly deleteTenantUseCase: DeleteTenantUseCase,
         private readonly updateTenantUseCase: UpdateTenantUseCase,
+        private readonly getCurrentTenantUseCase: GetCurrentTenantUseCase,
+        private readonly getThemeTenantUseCase: GetThemeTenantUseCase,
+        private readonly setThemeTenantUseCase: SetThemeTenantUseCase,
+        private readonly listTenantUseCase: ListTenantUseCase,
+        private readonly getHeroTenantUseCase: GetHeroTenantUseCase,
+        private readonly getFeaturesTenantUseCase: GetFeaturesTenantUseCase
+
     ) { }
 
     getCurrentTenant(id: string) {
-        return this.tenantRepository.findById(id);
+        return this.getCurrentTenantUseCase.execute(id);
     }
 
     createTenant(dto: CreateTenantDto) {
@@ -21,7 +41,7 @@ export class TenantService {
     }
 
     listTenants() {
-        return this.tenantRepository.findAll();
+        return this.listTenantUseCase.execute();
     }
 
     updateTenant(id: string, dto: UpdateTenantDto) {
@@ -33,10 +53,18 @@ export class TenantService {
     }
 
     setTheme(tenantId: string, dto: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
-        return this.tenantRepository.setTheme(tenantId, dto);
+        return this.setThemeTenantUseCase.execute(tenantId, dto);
     }
 
     getTheme(tenantId: string) {
-        return this.tenantRepository.getTheme(tenantId);
+        return this.getThemeTenantUseCase.execute(tenantId);
+    }
+
+    getHero(tenantId: string) {
+        return this.getHeroTenantUseCase.execute(tenantId);
+    }
+
+    getFeatures(tenantId: string) {
+        return this.getFeaturesTenantUseCase.execute(tenantId);
     }
 }

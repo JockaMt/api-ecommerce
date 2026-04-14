@@ -53,7 +53,11 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Tenant: 'Tenant',
   Product: 'Product',
-  Theme: 'Theme'
+  Theme: 'Theme',
+  Hero: 'Hero',
+  Feature: 'Feature',
+  User: 'User',
+  contactFields: 'contactFields'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -129,6 +133,56 @@ export const ThemeScalarFieldEnum = {
 export type ThemeScalarFieldEnum = (typeof ThemeScalarFieldEnum)[keyof typeof ThemeScalarFieldEnum]
 
 
+export const HeroScalarFieldEnum = {
+  tenantId: 'tenantId',
+  badge: 'badge',
+  titleLine1: 'titleLine1',
+  titleLine2: 'titleLine2',
+  titleHighlight: 'titleHighlight',
+  description: 'description',
+  buttonPrimary: 'buttonPrimary',
+  buttonSecondary: 'buttonSecondary'
+} as const
+
+export type HeroScalarFieldEnum = (typeof HeroScalarFieldEnum)[keyof typeof HeroScalarFieldEnum]
+
+
+export const FeatureScalarFieldEnum = {
+  id: 'id',
+  tenantId: 'tenantId',
+  icon: 'icon',
+  label: 'label',
+  title: 'title',
+  colors: 'colors'
+} as const
+
+export type FeatureScalarFieldEnum = (typeof FeatureScalarFieldEnum)[keyof typeof FeatureScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  password: 'password',
+  tenantId: 'tenantId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const ContactFieldsScalarFieldEnum = {
+  tenantId: 'tenantId',
+  id: 'id',
+  label: 'label',
+  type: 'type',
+  placeholder: 'placeholder',
+  required: 'required'
+} as const
+
+export type ContactFieldsScalarFieldEnum = (typeof ContactFieldsScalarFieldEnum)[keyof typeof ContactFieldsScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -137,10 +191,35 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
 export const NullsOrder = {
   first: 'first',
   last: 'last'
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 

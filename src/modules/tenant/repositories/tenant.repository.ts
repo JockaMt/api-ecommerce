@@ -42,4 +42,12 @@ export class TenantRepository {
         const deleted = await this.prisma.tenant.delete({ where: { id } });
         return !!deleted;
     }
+
+    async getHero(tenantId: string): Promise<any> {
+        return this.prisma.product.findFirst({ where: { tenantId } });
+    }
+
+    async getFeatures(tenantId: string): Promise<any> {
+        return this.prisma.feature.findMany({ where: { tenantId } });
+    }
 }

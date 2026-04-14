@@ -30,7 +30,12 @@ model Tenant {
   updatedAt         DateTime @updatedAt
 
   // Relations
-  products Product[]
+  products      Product[]
+  theme         Theme?
+  hero          Hero?
+  features      Feature[]
+  users         User[]
+  contactFields contactFields[]
 
   @@index([status])
 }
@@ -73,4 +78,60 @@ model Theme {
   gradientStart String
   gradientMid   String
   gradientEnd   String
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+model Hero {
+  tenantId        String  @id
+  badge           String?
+  titleLine1      String?
+  titleLine2      String?
+  titleHighlight  String?
+  description     String?
+  buttonPrimary   String?
+  buttonSecondary String?
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+model Feature {
+  id       Int     @id @default(autoincrement())
+  tenantId String
+  icon     String?
+  label    String?
+  title    String?
+  colors   Json?
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  tenantId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id])
+
+  // Indexes
+  @@index([tenantId])
+}
+
+model contactFields {
+  tenantId    String
+  id          String  @id @unique
+  label       String
+  type        String
+  placeholder String
+  required    Boolean
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id])
 }

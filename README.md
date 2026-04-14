@@ -1,31 +1,38 @@
-# 🛒 API Ecommerce
+# API Ecommerce
 
-Uma API em NestJS para um SaaS de e-commerce multi-tenant.
+API em NestJS para e-commerce multi-tenant, com Prisma + SQLite e documentacao Swagger.
 
-## 🚀 Estrutura do Projeto
+## Visao Geral
+
+- Framework: NestJS 11
+- Linguagem: TypeScript
+- Banco: SQLite (via Prisma)
+- Validacao: class-validator / class-transformer
+- Documentacao: Swagger em /docs
+
+## Estrutura Atual
 
 ```text
 src/
-├── app.module.ts                     # Modulo raiz da aplicacao
-├── main.ts                           # Bootstrap da API
+├── app.module.ts
+├── main.ts
 ├── config/
-│   └── swagger.config.ts             # Configuracao do Swagger
+│   └── swagger.config.ts
 ├── database/
 │   └── prisma/
-│       ├── schema.prisma             # Schema do banco
-│       ├── migrations/               # Migracoes Prisma
-│       └── generated/                # Cliente gerado do Prisma
+│       ├── schema.prisma
+│       ├── migrations/
+│       └── generated/
 └── modules/
 		├── admin/
 		│   ├── controllers/
-		│   │   └── admin.controller.ts
 		│   ├── services/
 		│   └── admin.module.ts
 		├── tenant/
 		│   ├── controllers/
 		│   │   ├── tenant.controller.ts
 		│   │   ├── user-tenant.controller.ts
-		│   │   └── set-tenant-theme.controller.ts
+		│   │   └── tenant-theme.controller.ts
 		│   ├── dto/
 		│   ├── repositories/
 		│   ├── services/
@@ -36,40 +43,36 @@ src/
 		│   ├── dto/
 		│   ├── repositories/
 		│   ├── services/
-		│   └── use-cases/
+		│   ├── use-cases/
+		│   └── product.module.ts
 		└── prisma/
 				├── prisma.module.ts
 				└── service/
 ```
 
-## 🛠️ Tecnologias
+## Modelos Prisma (schema.prisma)
 
-- NestJS 11
-- TypeScript
-- Prisma ORM + SQLite
-- class-validator / class-transformer
-- Swagger via @nestjs/swagger
-- Jest + Supertest
+Atualmente o schema contempla:
 
-## 📦 Funcionalidades
+- Tenant
+- Product
+- Theme
+- Hero
+- Feature
+- User
+- contactFields
 
-- ✅ Endpoint de status/metadata administrativo
-- ✅ CRUD de tenants no contexto admin
-- ✅ Consulta de tenant no contexto de usuario
-- ✅ Criacao/atualizacao de tema por tenant
-- ✅ Consulta de tema por tenant
-- ✅ Criacao e listagem de produtos por tenant
-- ✅ Documentacao Swagger em /docs
+Esses modelos suportam os blocos principais de conteudo do storefront por tenant (dados da loja, tema, hero, features e produtos).
 
-## 🧱 Arquitetura
+## Arquitetura
 
-O fluxo principal segue o padrao:
+Fluxo padrao por modulo:
 
 Controller -> Service -> Use Case -> Repository
 
-Com separacao por modulos (admin, tenant, products, prisma) para manter regras de negocio e acesso a dados desacoplados.
+Obs.: no modulo de products, o fluxo atual segue Controller -> Service -> Repository.
 
-## 🔌 Rotas Disponiveis
+## Rotas
 
 Base URL local: http://localhost:3000
 
@@ -87,14 +90,16 @@ Base URL local: http://localhost:3000
 - POST /:tenantId/theme
 - GET /:tenantId/theme
 
-### Produtos
+### Products
 
-- GET /products/:tenantId/:name
-- GET /products/:tenantId
-- GET /products/:tenantId/:category
-- POST /products
+- GET /:tenantId/products
+- GET /:tenantId/products/:name
+- GET /:tenantId/products/:category
+- POST /:tenantId/products
 
-Exemplo de body para criar tenant:
+## Exemplos de Payload
+
+### Criar tenant
 
 ```json
 {
@@ -111,25 +116,53 @@ Exemplo de body para criar tenant:
 }
 ```
 
-## 📚 Swagger
+### Criar produto
 
-- URL: http://localhost:3000/docs
-- Configuracao: src/config/swagger.config.ts
-
-## 🚀 Como Executar
-
-```bash
-# Instalar dependencias
-npm install
-
-# Desenvolvimento
-npm run start:dev
-
-# Modo normal
-npm run start
+```json
+{
+	"tenantId": "tenant-uuid",
+	"name": "Topo de Bolo Personalizado",
+	"category": "lembrancas",
+	"description": "Produto personalizado em impressao 3D",
+	"price": 39,
+	"priceOriginal": 49,
+	"badge": "Mais pedido",
+	"image": "https://example.com/image.jpg",
+	"rating": 4.9,
+	"reviews": 163,
+	"stock": 45,
+	"highlight": true
+}
 ```
 
-## 🧪 Scripts Uteis
+## Ambiente
+
+Variaveis esperadas:
+
+- DATABASE_URL
+- PORT (opcional, padrao 3000)
+
+## Como Rodar
+
+```bash
+npm install
+npm run start:dev
+```
+
+Swagger:
+
+- http://localhost:3000/docs
+
+## Prisma Workflow
+
+Com o schema em src/database/prisma/schema.prisma e prisma.config.ts na raiz:
+
+```bash
+npx prisma migrate dev --name nome_da_migracao
+npx prisma generate
+```
+
+## Scripts
 
 ```bash
 npm run build
@@ -139,14 +172,7 @@ npm run test:e2e
 npm run test:cov
 ```
 
-## 🔧 Configuracao
+## Observacoes Importantes
 
-- Path alias: @/* -> ./src/*
-- TypeScript com strictNullChecks habilitado
-- Swagger com Bearer Auth configurado no DocumentBuilder
-
-## 📁 Observacoes Importantes
-
-- O projeto utiliza Prisma com schema e migracoes em src/database/prisma.
-- O endpoint GET /tenant atualmente esta com @Param sem segmento de rota, o que pode exigir ajuste para GET /tenant/:id ou uso de header/claim.
-- Existem duas rotas de GET em products com assinatura semelhante (:tenantId/:name e :tenantId/:category); dependendo da ordem e da regra esperada, pode haver ambiguidade de match.
+- A rota GET /tenant hoje esta sem parametro de id no path e pode precisar de ajuste conforme a estrategia de identificacao do tenant.
+- Em products, as rotas GET /:tenantId/products/:name e GET /:tenantId/products/:category possuem mesmo padrao de URL e podem gerar ambiguidade.

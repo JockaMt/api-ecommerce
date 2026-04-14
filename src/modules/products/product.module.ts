@@ -3,6 +3,7 @@ import { PrismaService } from "@/modules/prisma/service/prisma.service";
 import { ProductController } from "@/modules/products/controllers/product.controller";
 import { ProductService } from "@/modules/products/services/product.service";
 import { ProductRepository } from "@/modules/products/repositories/product.repository";
+import { CreateProductUseCase } from "@/modules/products/use-cases";
 
 @Module({
     imports: [],
@@ -10,7 +11,8 @@ import { ProductRepository } from "@/modules/products/repositories/product.repos
     providers: [
         PrismaService,
         ProductService,
-        ProductRepository
+        ProductRepository,
+        CreateProductUseCase
     ],
     exports: [ProductService, ProductRepository],
 })

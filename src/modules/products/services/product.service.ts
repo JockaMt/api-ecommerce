@@ -1,11 +1,16 @@
-import { PrismaService } from "@/modules/prisma/service/prisma.service";
 import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "@/modules/products/dto/create-product.dto";
 import { ProductRepository } from "@/modules/products/repositories/product.repository";
+import {
+    CreateProductUseCase,
+} from "@/modules/products/use-cases";
 
 @Injectable()
 export class ProductService {
-    constructor(private readonly productRepository: ProductRepository) { }
+    constructor(
+        private readonly productRepository: ProductRepository,
+        private readonly createProductUseCase: CreateProductUseCase
+    ) { }
 
     getProduct(name: string, tenantId: string) {
         return this.productRepository.findByName(name, tenantId);
@@ -20,6 +25,6 @@ export class ProductService {
     }
 
     createProduct(dto: CreateProductDto) {
-        return this.productRepository.create(dto);
+        return this.createProductUseCase.execute(dto);
     }
 }

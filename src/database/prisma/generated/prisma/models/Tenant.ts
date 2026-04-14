@@ -255,6 +255,11 @@ export type TenantWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   products?: Prisma.ProductListRelationFilter
+  theme?: Prisma.XOR<Prisma.ThemeNullableScalarRelationFilter, Prisma.ThemeWhereInput> | null
+  hero?: Prisma.XOR<Prisma.HeroNullableScalarRelationFilter, Prisma.HeroWhereInput> | null
+  features?: Prisma.FeatureListRelationFilter
+  users?: Prisma.UserListRelationFilter
+  contactFields?: Prisma.ContactFieldsListRelationFilter
 }
 
 export type TenantOrderByWithRelationInput = {
@@ -273,6 +278,11 @@ export type TenantOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   products?: Prisma.ProductOrderByRelationAggregateInput
+  theme?: Prisma.ThemeOrderByWithRelationInput
+  hero?: Prisma.HeroOrderByWithRelationInput
+  features?: Prisma.FeatureOrderByRelationAggregateInput
+  users?: Prisma.UserOrderByRelationAggregateInput
+  contactFields?: Prisma.contactFieldsOrderByRelationAggregateInput
 }
 
 export type TenantWhereUniqueInput = Prisma.AtLeast<{
@@ -294,6 +304,11 @@ export type TenantWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Tenant"> | Date | string
   products?: Prisma.ProductListRelationFilter
+  theme?: Prisma.XOR<Prisma.ThemeNullableScalarRelationFilter, Prisma.ThemeWhereInput> | null
+  hero?: Prisma.XOR<Prisma.HeroNullableScalarRelationFilter, Prisma.HeroWhereInput> | null
+  features?: Prisma.FeatureListRelationFilter
+  users?: Prisma.UserListRelationFilter
+  contactFields?: Prisma.ContactFieldsListRelationFilter
 }, "id" | "name">
 
 export type TenantOrderByWithAggregationInput = {
@@ -352,6 +367,11 @@ export type TenantCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateInput = {
@@ -370,6 +390,11 @@ export type TenantUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeUncheckedCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroUncheckedCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUpdateInput = {
@@ -388,6 +413,11 @@ export type TenantUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateInput = {
@@ -406,6 +436,11 @@ export type TenantUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUncheckedUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUncheckedUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantCreateManyInput = {
@@ -541,6 +576,76 @@ export type TenantUpdateOneRequiredWithoutProductsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutProductsInput, Prisma.TenantUpdateWithoutProductsInput>, Prisma.TenantUncheckedUpdateWithoutProductsInput>
 }
 
+export type TenantCreateNestedOneWithoutThemeInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutThemeInput, Prisma.TenantUncheckedCreateWithoutThemeInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutThemeInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutThemeNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutThemeInput, Prisma.TenantUncheckedCreateWithoutThemeInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutThemeInput
+  upsert?: Prisma.TenantUpsertWithoutThemeInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutThemeInput, Prisma.TenantUpdateWithoutThemeInput>, Prisma.TenantUncheckedUpdateWithoutThemeInput>
+}
+
+export type TenantCreateNestedOneWithoutHeroInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutHeroInput, Prisma.TenantUncheckedCreateWithoutHeroInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutHeroInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutHeroNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutHeroInput, Prisma.TenantUncheckedCreateWithoutHeroInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutHeroInput
+  upsert?: Prisma.TenantUpsertWithoutHeroInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutHeroInput, Prisma.TenantUpdateWithoutHeroInput>, Prisma.TenantUncheckedUpdateWithoutHeroInput>
+}
+
+export type TenantCreateNestedOneWithoutFeaturesInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutFeaturesInput, Prisma.TenantUncheckedCreateWithoutFeaturesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutFeaturesInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutFeaturesNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutFeaturesInput, Prisma.TenantUncheckedCreateWithoutFeaturesInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutFeaturesInput
+  upsert?: Prisma.TenantUpsertWithoutFeaturesInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutFeaturesInput, Prisma.TenantUpdateWithoutFeaturesInput>, Prisma.TenantUncheckedUpdateWithoutFeaturesInput>
+}
+
+export type TenantCreateNestedOneWithoutUsersInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsersInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutUsersNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutUsersInput
+  upsert?: Prisma.TenantUpsertWithoutUsersInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutUsersInput, Prisma.TenantUpdateWithoutUsersInput>, Prisma.TenantUncheckedUpdateWithoutUsersInput>
+}
+
+export type TenantCreateNestedOneWithoutContactFieldsInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutContactFieldsInput, Prisma.TenantUncheckedCreateWithoutContactFieldsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutContactFieldsInput
+  connect?: Prisma.TenantWhereUniqueInput
+}
+
+export type TenantUpdateOneRequiredWithoutContactFieldsNestedInput = {
+  create?: Prisma.XOR<Prisma.TenantCreateWithoutContactFieldsInput, Prisma.TenantUncheckedCreateWithoutContactFieldsInput>
+  connectOrCreate?: Prisma.TenantCreateOrConnectWithoutContactFieldsInput
+  upsert?: Prisma.TenantUpsertWithoutContactFieldsInput
+  connect?: Prisma.TenantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TenantUpdateToOneWithWhereWithoutContactFieldsInput, Prisma.TenantUpdateWithoutContactFieldsInput>, Prisma.TenantUncheckedUpdateWithoutContactFieldsInput>
+}
+
 export type TenantCreateWithoutProductsInput = {
   id?: string
   name: string
@@ -556,6 +661,11 @@ export type TenantCreateWithoutProductsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  theme?: Prisma.ThemeCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsCreateNestedManyWithoutTenantInput
 }
 
 export type TenantUncheckedCreateWithoutProductsInput = {
@@ -573,6 +683,11 @@ export type TenantUncheckedCreateWithoutProductsInput = {
   status?: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  theme?: Prisma.ThemeUncheckedCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroUncheckedCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsUncheckedCreateNestedManyWithoutTenantInput
 }
 
 export type TenantCreateOrConnectWithoutProductsInput = {
@@ -606,6 +721,11 @@ export type TenantUpdateWithoutProductsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  theme?: Prisma.ThemeUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUpdateManyWithoutTenantNestedInput
 }
 
 export type TenantUncheckedUpdateWithoutProductsInput = {
@@ -623,6 +743,531 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  theme?: Prisma.ThemeUncheckedUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUncheckedUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutThemeInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput
+  hero?: Prisma.HeroCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutThemeInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput
+  hero?: Prisma.HeroUncheckedCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutThemeInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutThemeInput, Prisma.TenantUncheckedCreateWithoutThemeInput>
+}
+
+export type TenantUpsertWithoutThemeInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutThemeInput, Prisma.TenantUncheckedUpdateWithoutThemeInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutThemeInput, Prisma.TenantUncheckedCreateWithoutThemeInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutThemeInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutThemeInput, Prisma.TenantUncheckedUpdateWithoutThemeInput>
+}
+
+export type TenantUpdateWithoutThemeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput
+  hero?: Prisma.HeroUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutThemeInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput
+  hero?: Prisma.HeroUncheckedUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutHeroInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutHeroInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeUncheckedCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutHeroInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutHeroInput, Prisma.TenantUncheckedCreateWithoutHeroInput>
+}
+
+export type TenantUpsertWithoutHeroInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutHeroInput, Prisma.TenantUncheckedUpdateWithoutHeroInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutHeroInput, Prisma.TenantUncheckedCreateWithoutHeroInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutHeroInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutHeroInput, Prisma.TenantUncheckedUpdateWithoutHeroInput>
+}
+
+export type TenantUpdateWithoutHeroInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutHeroInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUncheckedUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutFeaturesInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroCreateNestedOneWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutFeaturesInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeUncheckedCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroUncheckedCreateNestedOneWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutFeaturesInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutFeaturesInput, Prisma.TenantUncheckedCreateWithoutFeaturesInput>
+}
+
+export type TenantUpsertWithoutFeaturesInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutFeaturesInput, Prisma.TenantUncheckedUpdateWithoutFeaturesInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutFeaturesInput, Prisma.TenantUncheckedCreateWithoutFeaturesInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutFeaturesInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutFeaturesInput, Prisma.TenantUncheckedUpdateWithoutFeaturesInput>
+}
+
+export type TenantUpdateWithoutFeaturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUpdateOneWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutFeaturesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUncheckedUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUncheckedUpdateOneWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutUsersInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutUsersInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeUncheckedCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroUncheckedCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutTenantInput
+  contactFields?: Prisma.contactFieldsUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutUsersInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
+}
+
+export type TenantUpsertWithoutUsersInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutUsersInput, Prisma.TenantUncheckedUpdateWithoutUsersInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutUsersInput, Prisma.TenantUncheckedCreateWithoutUsersInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutUsersInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutUsersInput, Prisma.TenantUncheckedUpdateWithoutUsersInput>
+}
+
+export type TenantUpdateWithoutUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutUsersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUncheckedUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUncheckedUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutTenantNestedInput
+  contactFields?: Prisma.contactFieldsUncheckedUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantCreateWithoutContactFieldsInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserCreateNestedManyWithoutTenantInput
+}
+
+export type TenantUncheckedCreateWithoutContactFieldsInput = {
+  id?: string
+  name: string
+  themeName: string
+  metaTitle?: string | null
+  metaDescription?: string | null
+  phone?: string | null
+  phoneDisplay?: string | null
+  instagram?: string | null
+  whatsappMessage?: string | null
+  footerDescription?: string | null
+  footerNotice?: string | null
+  status?: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  products?: Prisma.ProductUncheckedCreateNestedManyWithoutTenantInput
+  theme?: Prisma.ThemeUncheckedCreateNestedOneWithoutTenantInput
+  hero?: Prisma.HeroUncheckedCreateNestedOneWithoutTenantInput
+  features?: Prisma.FeatureUncheckedCreateNestedManyWithoutTenantInput
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutTenantInput
+}
+
+export type TenantCreateOrConnectWithoutContactFieldsInput = {
+  where: Prisma.TenantWhereUniqueInput
+  create: Prisma.XOR<Prisma.TenantCreateWithoutContactFieldsInput, Prisma.TenantUncheckedCreateWithoutContactFieldsInput>
+}
+
+export type TenantUpsertWithoutContactFieldsInput = {
+  update: Prisma.XOR<Prisma.TenantUpdateWithoutContactFieldsInput, Prisma.TenantUncheckedUpdateWithoutContactFieldsInput>
+  create: Prisma.XOR<Prisma.TenantCreateWithoutContactFieldsInput, Prisma.TenantUncheckedCreateWithoutContactFieldsInput>
+  where?: Prisma.TenantWhereInput
+}
+
+export type TenantUpdateToOneWithWhereWithoutContactFieldsInput = {
+  where?: Prisma.TenantWhereInput
+  data: Prisma.XOR<Prisma.TenantUpdateWithoutContactFieldsInput, Prisma.TenantUncheckedUpdateWithoutContactFieldsInput>
+}
+
+export type TenantUpdateWithoutContactFieldsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUpdateManyWithoutTenantNestedInput
+}
+
+export type TenantUncheckedUpdateWithoutContactFieldsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  themeName?: Prisma.StringFieldUpdateOperationsInput | string
+  metaTitle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phoneDisplay?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  instagram?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappMessage?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerDescription?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  footerNotice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  products?: Prisma.ProductUncheckedUpdateManyWithoutTenantNestedInput
+  theme?: Prisma.ThemeUncheckedUpdateOneWithoutTenantNestedInput
+  hero?: Prisma.HeroUncheckedUpdateOneWithoutTenantNestedInput
+  features?: Prisma.FeatureUncheckedUpdateManyWithoutTenantNestedInput
+  users?: Prisma.UserUncheckedUpdateManyWithoutTenantNestedInput
 }
 
 
@@ -632,10 +1277,16 @@ export type TenantUncheckedUpdateWithoutProductsInput = {
 
 export type TenantCountOutputType = {
   products: number
+  features: number
+  users: number
+  contactFields: number
 }
 
 export type TenantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | TenantCountOutputTypeCountProductsArgs
+  features?: boolean | TenantCountOutputTypeCountFeaturesArgs
+  users?: boolean | TenantCountOutputTypeCountUsersArgs
+  contactFields?: boolean | TenantCountOutputTypeCountContactFieldsArgs
 }
 
 /**
@@ -655,6 +1306,27 @@ export type TenantCountOutputTypeCountProductsArgs<ExtArgs extends runtime.Types
   where?: Prisma.ProductWhereInput
 }
 
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountFeaturesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeatureWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountUsersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UserWhereInput
+}
+
+/**
+ * TenantCountOutputType without action
+ */
+export type TenantCountOutputTypeCountContactFieldsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.contactFieldsWhereInput
+}
+
 
 export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -672,6 +1344,11 @@ export type TenantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   createdAt?: boolean
   updatedAt?: boolean
   products?: boolean | Prisma.Tenant$productsArgs<ExtArgs>
+  theme?: boolean | Prisma.Tenant$themeArgs<ExtArgs>
+  hero?: boolean | Prisma.Tenant$heroArgs<ExtArgs>
+  features?: boolean | Prisma.Tenant$featuresArgs<ExtArgs>
+  users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
+  contactFields?: boolean | Prisma.Tenant$contactFieldsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["tenant"]>
 
@@ -729,6 +1406,11 @@ export type TenantSelectScalar = {
 export type TenantOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "themeName" | "metaTitle" | "metaDescription" | "phone" | "phoneDisplay" | "instagram" | "whatsappMessage" | "footerDescription" | "footerNotice" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["tenant"]>
 export type TenantInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   products?: boolean | Prisma.Tenant$productsArgs<ExtArgs>
+  theme?: boolean | Prisma.Tenant$themeArgs<ExtArgs>
+  hero?: boolean | Prisma.Tenant$heroArgs<ExtArgs>
+  features?: boolean | Prisma.Tenant$featuresArgs<ExtArgs>
+  users?: boolean | Prisma.Tenant$usersArgs<ExtArgs>
+  contactFields?: boolean | Prisma.Tenant$contactFieldsArgs<ExtArgs>
   _count?: boolean | Prisma.TenantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TenantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -738,6 +1420,11 @@ export type $TenantPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Tenant"
   objects: {
     products: Prisma.$ProductPayload<ExtArgs>[]
+    theme: Prisma.$ThemePayload<ExtArgs> | null
+    hero: Prisma.$HeroPayload<ExtArgs> | null
+    features: Prisma.$FeaturePayload<ExtArgs>[]
+    users: Prisma.$UserPayload<ExtArgs>[]
+    contactFields: Prisma.$contactFieldsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1149,6 +1836,11 @@ readonly fields: TenantFieldRefs;
 export interface Prisma__TenantClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   products<T extends Prisma.Tenant$productsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$productsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  theme<T extends Prisma.Tenant$themeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$themeArgs<ExtArgs>>): Prisma.Prisma__ThemeClient<runtime.Types.Result.GetResult<Prisma.$ThemePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  hero<T extends Prisma.Tenant$heroArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$heroArgs<ExtArgs>>): Prisma.Prisma__HeroClient<runtime.Types.Result.GetResult<Prisma.$HeroPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  features<T extends Prisma.Tenant$featuresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$featuresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeaturePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.Tenant$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$usersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  contactFields<T extends Prisma.Tenant$contactFieldsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Tenant$contactFieldsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$contactFieldsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1604,6 +2296,116 @@ export type Tenant$productsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ProductScalarFieldEnum | Prisma.ProductScalarFieldEnum[]
+}
+
+/**
+ * Tenant.theme
+ */
+export type Tenant$themeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Theme
+   */
+  select?: Prisma.ThemeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Theme
+   */
+  omit?: Prisma.ThemeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ThemeInclude<ExtArgs> | null
+  where?: Prisma.ThemeWhereInput
+}
+
+/**
+ * Tenant.hero
+ */
+export type Tenant$heroArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Hero
+   */
+  select?: Prisma.HeroSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Hero
+   */
+  omit?: Prisma.HeroOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.HeroInclude<ExtArgs> | null
+  where?: Prisma.HeroWhereInput
+}
+
+/**
+ * Tenant.features
+ */
+export type Tenant$featuresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Feature
+   */
+  select?: Prisma.FeatureSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Feature
+   */
+  omit?: Prisma.FeatureOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeatureInclude<ExtArgs> | null
+  where?: Prisma.FeatureWhereInput
+  orderBy?: Prisma.FeatureOrderByWithRelationInput | Prisma.FeatureOrderByWithRelationInput[]
+  cursor?: Prisma.FeatureWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeatureScalarFieldEnum | Prisma.FeatureScalarFieldEnum[]
+}
+
+/**
+ * Tenant.users
+ */
+export type Tenant$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[]
+  cursor?: Prisma.UserWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UserScalarFieldEnum | Prisma.UserScalarFieldEnum[]
+}
+
+/**
+ * Tenant.contactFields
+ */
+export type Tenant$contactFieldsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the contactFields
+   */
+  select?: Prisma.contactFieldsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the contactFields
+   */
+  omit?: Prisma.contactFieldsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.contactFieldsInclude<ExtArgs> | null
+  where?: Prisma.contactFieldsWhereInput
+  orderBy?: Prisma.contactFieldsOrderByWithRelationInput | Prisma.contactFieldsOrderByWithRelationInput[]
+  cursor?: Prisma.contactFieldsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ContactFieldsScalarFieldEnum | Prisma.ContactFieldsScalarFieldEnum[]
 }
 
 /**
