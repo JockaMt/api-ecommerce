@@ -24,7 +24,14 @@ export class UserTenantController {
     })
     @ApiOkResponse({ description: "Dados do tenant retornados com sucesso" })
     @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
-    getCurrentTenant(@CurrentTenant() tenant: TenantContext) {
-        return this.tenantService.getCurrentTenant(tenant.id);
+    async getCurrentTenant(@CurrentTenant() tenant: TenantContext) {
+        const tenantData = await this.tenantService.getCurrentTenant(tenant.id);
+
+        if (!tenantData) {
+            return tenantData;
+        }
+
+        const { id: _id, ...publicTenantData } = tenantData;
+        return publicTenantData;
     }
 }

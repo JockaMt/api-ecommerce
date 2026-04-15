@@ -17,7 +17,7 @@ export async function createNestApp(): Promise<INestApplication> {
     app.enableCors({
         origin: corsOrigins,
         methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Forwarded-Host'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Forwarded-Host', 'X-Tenant-ID'],
         credentials: false,
     });
 

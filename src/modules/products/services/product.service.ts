@@ -24,7 +24,7 @@ export class ProductService {
         return this.productRepository.listProductsByCategory(category, tenantId);
     }
 
-    createProduct(dto: CreateProductDto) {
-        return this.createProductUseCase.execute(dto);
+    createProduct(dto: CreateProductDto, tenantId: string) {
+        return this.createProductUseCase.execute(dto, tenantId);
     }
 }

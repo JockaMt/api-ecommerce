@@ -58,7 +58,7 @@ model Product {
   updatedAt     DateTime @updatedAt
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   // Indexes
   @@index([tenantId])
@@ -80,7 +80,7 @@ model Theme {
   gradientEnd   String
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Hero {
@@ -94,7 +94,7 @@ model Hero {
   buttonSecondary String?
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Feature {
@@ -106,7 +106,7 @@ model Feature {
   colors   Json?
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model User {
@@ -118,7 +118,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   // Indexes
   @@index([tenantId])
@@ -133,5 +133,5 @@ model contactFields {
   required    Boolean
 
   // Relations
-  tenant Tenant @relation(fields: [tenantId], references: [id])
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

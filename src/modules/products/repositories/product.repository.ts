@@ -15,9 +15,12 @@ export class ProductRepository {
         });
     }
 
-    async create(dto: CreateProductDto): Promise<any> {
+    async create(dto: CreateProductDto, tenantId: string): Promise<any> {
         return this.prismaService.product.create({
-            data: dto
+            data: {
+                ...dto,
+                tenantId,
+            }
         });
 
     }

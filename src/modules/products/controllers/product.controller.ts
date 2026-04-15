@@ -78,10 +78,15 @@ export class ProductController {
 
     @Post()
     @ApiOperation({ summary: "Cria um novo produto" })
+    @ApiHeader({
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
+    })
     @ApiBody({ type: CreateProductDto, description: "Dados do produto a ser criado" })
     @ApiCreatedResponse({ description: "Produto criado com sucesso" })
-    @ApiBadRequestResponse({ description: "Payload inválido para criação do produto" })
-    createProduct(@Body() dto: CreateProductDto) {
-        return this.productService.createProduct(dto);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente, invalido ou payload inválido" })
+    createProduct(@CurrentTenant() tenant: TenantContext, @Body() dto: CreateProductDto) {
+        return this.productService.createProduct(dto, tenant.id);
     }
 }

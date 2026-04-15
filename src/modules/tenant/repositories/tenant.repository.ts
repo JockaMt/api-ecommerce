@@ -51,8 +51,21 @@ export class TenantRepository {
         return tenants.find((tenant) => this.normalizeTenantKey(tenant.name) === normalizedHostKey) ?? null;
     }
 
-    async create(dto: any): Promise<any> {
-        return this.prisma.tenant.create({ data: dto });
+    async create(dto: any, theme: any): Promise<any> {
+        const tenant = await this.prisma.$transaction(async (tx) => {
+            const createdTenant = await tx.tenant.create({ data: dto });
+
+            await tx.theme.create({
+                data: {
+                    ...theme,
+                    tenantId: createdTenant.id,
+                },
+            });
+
+            return createdTenant;
+        });
+
+        return tenant;
     }
 
     async findAll(): Promise<any[]> {

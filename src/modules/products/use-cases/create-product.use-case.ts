@@ -6,14 +6,14 @@ import { CreateProductDto } from "@/modules/products/dto/create-product.dto";
 export class CreateProductUseCase {
     constructor(private readonly productRepository: ProductRepository) { }
 
-    async execute(dto: CreateProductDto) {
+    async execute(dto: CreateProductDto, tenantId: string) {
 
-        const exists = await this.productRepository.findByName(dto.name, dto.tenantId);
+        const exists = await this.productRepository.findByName(dto.name, tenantId);
 
         if (exists) {
             throw new Error("Product already exists");
         }
 
-        return this.productRepository.create(dto);
+        return this.productRepository.create(dto, tenantId);
     }
 }

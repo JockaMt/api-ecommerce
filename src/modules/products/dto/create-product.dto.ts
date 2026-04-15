@@ -3,11 +3,6 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
 export class CreateProductDto {
-    @ApiProperty({ description: 'ID do tenant', example: '123e4567-e89b-12d3-a456-426614174000' })
-    @IsString()
-    @IsNotEmpty()
-    tenantId!: string;
-
     @ApiProperty({ description: 'Nome do produto', example: 'Camiseta Estampada' })
     @IsString()
     @IsNotEmpty()

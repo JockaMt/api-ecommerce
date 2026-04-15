@@ -6,12 +6,13 @@ export default function setupSwagger(app) {
         .setDescription(
             'Documentação da API multi-tenant.\n\n' +
             'Resolucao de tenant por host:\n' +
-            '- Desenvolvimento: http://loja1.localhost:3000\n' +
+            '- Desenvolvimento: http://loja1.localhost:3030\n' +
             '- Producao: https://loja1.seudominio.com\n\n' +
             'No Swagger UI, use o header x-forwarded-host para simular o host quando necessario.'
         )
         .setVersion('1.0')
-        .addServer('/', 'Servidor atual')
+        .addServer('/', 'Servidor atual (mesma origem)')
+        .addServer('http://template-store.localhost:3030', 'Servidor local com tenant no host')
         .addBearerAuth()
         .build();
     const document = SwaggerModule.createDocument(app, config);
