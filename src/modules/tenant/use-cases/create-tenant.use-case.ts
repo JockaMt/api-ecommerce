@@ -1,6 +1,6 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { TenantRepository } from '@/modules/tenant/repositories/tenant.repository';
-import { CreateTenantDto } from '@/modules/tenant/dto/create-tenant.dto';
+import { CreateTenantDto, CreateTenantThemeDTO } from '@/modules/tenant/dto';
 
 @Injectable()
 export class CreateTenantUseCase {
@@ -15,6 +15,25 @@ export class CreateTenantUseCase {
             throw new ConflictException("Uma empresa com esse nome já foi cadastrada.");
         }
 
-        return this.tenantRepository.create(dto);
+        const tenant = await this.tenantRepository.create(dto);
+
+        const themeDto: CreateTenantThemeDTO = {
+            tenantId: tenant.id,
+            primary: "#00b5d8",
+            primaryHover: "#009aba",
+            secondary: "#133b96",
+            secondaryDark: "#0a1a54",
+            surface: "#f8f4ef",
+            text: "#2f2924",
+            textMuted: "#6b625b",
+            border: "#e8ddd2",
+            gradientStart: "#2f7fe9",
+            gradientMid: "#3da7f2",
+            gradientEnd: "#79d0ff",
+        }
+
+        await this.tenantRepository.setTheme(tenant.id, themeDto);
+
+        return;
     }
 }
