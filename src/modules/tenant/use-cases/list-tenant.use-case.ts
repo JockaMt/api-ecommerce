@@ -1,11 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { TenantRepository } from "../repositories/tenant.repository";
+import { Injectable, Inject } from "@nestjs/common";
+import type { ITenantRepository } from "@/modules/tenant/repositories/interfaces";
+import { Tenant } from "@/modules/tenant/domain";
 
 @Injectable()
 export class ListTenantUseCase {
-    constructor(private readonly tenantRepository: TenantRepository) { }
+    constructor(
+        @Inject('ITenantRepository')
+        private readonly tenantRepository: ITenantRepository
+    ) { }
 
-    async execute() {
+    async execute(): Promise<Tenant[]> {
         return this.tenantRepository.findAll();
     }
 }

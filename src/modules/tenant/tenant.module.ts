@@ -1,6 +1,9 @@
 import { Module } from "@nestjs/common";
 import { TenantService } from "@/modules/tenant/services/tenant.service";
-import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
+import { TenantRepository, TenantKeyNormalizer } from "@/modules/tenant/repositories/tenant.repository";
+import { ThemeRepository } from "@/modules/tenant/repositories/theme.repository";
+import { HeroRepository } from "@/modules/tenant/repositories/hero.repository";
+import { FeatureRepository } from "@/modules/tenant/repositories/feature.repository";
 import { PrismaService } from "@/modules/prisma/service/prisma.service";
 import {
     CreateTenantUseCase,
@@ -20,6 +23,7 @@ import {
     TenantThemeController,
     TenantHeroController
 } from "@/modules/tenant/controllers";
+import { ITenantRepository, IThemeRepository, IHeroRepository, IFeatureRepository } from "@/modules/tenant/repositories/interfaces";
 
 @Module({
     imports: [],
@@ -31,8 +35,29 @@ import {
     ],
     providers: [
         PrismaService,
-        TenantService,
+        TenantKeyNormalizer,
         TenantRepository,
+        ThemeRepository,
+        HeroRepository,
+        FeatureRepository,
+        TenantService,
+        // Registrar interfaces para injeção de dependência
+        {
+            provide: 'ITenantRepository',
+            useClass: TenantRepository,
+        },
+        {
+            provide: 'IThemeRepository',
+            useClass: ThemeRepository,
+        },
+        {
+            provide: 'IHeroRepository',
+            useClass: HeroRepository,
+        },
+        {
+            provide: 'IFeatureRepository',
+            useClass: FeatureRepository,
+        },
         CreateTenantUseCase,
         UpdateTenantUseCase,
         DeleteTenantUseCase,
@@ -44,6 +69,6 @@ import {
         GetFeaturesTenantUseCase,
         SetHeroTenantUseCase
     ],
-    exports: [TenantService, TenantRepository],
+    exports: [TenantService, TenantRepository, ThemeRepository, HeroRepository, FeatureRepository],
 })
 export class TenantModule { }

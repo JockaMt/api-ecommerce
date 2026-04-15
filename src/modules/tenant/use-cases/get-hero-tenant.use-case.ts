@@ -1,12 +1,22 @@
-import { Injectable } from "@nestjs/common";
-import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
+import { Injectable, Inject } from "@nestjs/common";
+import type { IHeroRepository } from "@/modules/tenant/repositories/interfaces";
+import { Hero } from "@/modules/tenant/domain";
 
+/**
+ * GetHeroTenantUseCase
+ * 
+ * Mudança SOLID:
+ * - Antes: dependia de TenantRepository
+ * - Agora: depende de IHeroRepository (segregado)
+ */
 @Injectable()
 export class GetHeroTenantUseCase {
-    constructor(private readonly tenantRepository: TenantRepository) { }
+    constructor(
+        @Inject('IHeroRepository')
+        private readonly heroRepository: IHeroRepository
+    ) { }
 
-    async execute(tenantId: string) {
-        // Lógica para obter o "herói" do tenant, por exemplo, um produto ou categoria em destaque
-        return this.tenantRepository.getHero(tenantId);
+    async execute(tenantId: string): Promise<Hero | null> {
+        return this.heroRepository.findByTenantId(tenantId);
     }
 }

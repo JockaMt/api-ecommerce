@@ -1,0 +1,1 @@
+export * from './iproduct-repository';

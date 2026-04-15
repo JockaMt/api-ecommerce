@@ -1,11 +1,15 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
+import { BadRequestException, Injectable, Inject } from "@nestjs/common";
+import type { ITenantRepository } from "@/modules/tenant/repositories/interfaces";
+import { Tenant } from "@/modules/tenant/domain";
 
 @Injectable()
 export class GetCurrentTenantUseCase {
-    constructor(private readonly tenantRepository: TenantRepository) { }
+    constructor(
+        @Inject('ITenantRepository')
+        private readonly tenantRepository: ITenantRepository
+    ) { }
 
-    async execute(id: string) {
+    async execute(id: string): Promise<Tenant | null> {
         if (!id) {
             throw new BadRequestException("Tenant ID é obrigatório");
         }

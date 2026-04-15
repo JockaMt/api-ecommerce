@@ -1,43 +1,38 @@
-import { PrismaService } from "@/modules/prisma/service/prisma.service";
-import { Injectable } from "@nestjs/common";
-import { CreateTenantHeroDTO, CreateTenantThemeDTO, UpdateTenantHeroDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
+import { PrismaService } from '@/modules/prisma/service/prisma.service';
+import { Injectable } from '@nestjs/common';
+import { CreateTenantDto, UpdateTenantDto } from '@/modules/tenant/dto';
+import { Tenant } from '@/modules/tenant/domain';
+import { ITenantRepository } from './interfaces';
 
+/**
+ * Repositório refatorado para CRUD de Tenant
+ * Responsabilidade única: Gerenciar entidade Tenant
+ * 
+ * Segregação SOLID:
+ * - Theme: use ThemeRepository
+ * - Hero: use HeroRepository
+ * - Features: use FeatureRepository
+ * - Normalização: use TenantKeyNormalizer
+ */
 @Injectable()
-export class TenantRepository {
-    constructor(private readonly prisma: PrismaService) { }
+export class TenantRepository implements ITenantRepository {
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly tenantKeyNormalizer: TenantKeyNormalizer
+    ) { }
 
-    private normalizeTenantKey(value: string): string {
-        return value
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
+    async findById(id: string): Promise<Tenant | null> {
+        const raw = await this.prisma.tenant.findUnique({ where: { id } });
+        return raw ? this.mapToPrismaModel(raw) : null;
     }
 
-    async getTheme(tenantId: string): Promise<any> {
-        return this.prisma.theme.findFirst({ where: { tenantId } });
+    async findByName(name: string): Promise<Tenant | null> {
+        const raw = await this.prisma.tenant.findUnique({ where: { name } });
+        return raw ? this.mapToPrismaModel(raw) : null;
     }
 
-    async setTheme(tenantId: string, theme: CreateTenantThemeDTO | UpdateTenantThemeDTO): Promise<any> {
-        return this.prisma.theme.update({ where: { tenantId }, data: theme });
-    }
-
-    async createTheme(dto: any): Promise<any> {
-        return this.prisma.theme.create({ data: dto });
-    }
-
-    async findById(id: string): Promise<any> {
-        return this.prisma.tenant.findUnique({ where: { id } });
-    }
-
-    async findByName(name: string): Promise<any> {
-        return this.prisma.tenant.findUnique({ where: { name } });
-    }
-
-    async findByHostKey(hostKey: string): Promise<any> {
-        const normalizedHostKey = this.normalizeTenantKey(hostKey);
+    async findByHostKey(hostKey: string): Promise<Tenant | null> {
+        const normalizedHostKey = this.tenantKeyNormalizer.normalize(hostKey);
         if (!normalizedHostKey) {
             return null;
         }
@@ -48,32 +43,26 @@ export class TenantRepository {
         }
 
         const tenants = await this.findAll();
-        return tenants.find((tenant) => this.normalizeTenantKey(tenant.name) === normalizedHostKey) ?? null;
+        const found = tenants.find(
+            (tenant) =>
+                this.tenantKeyNormalizer.normalize(tenant.name) === normalizedHostKey
+        );
+        return found ?? null;
     }
 
-    async create(dto: any, theme: any): Promise<any> {
-        const tenant = await this.prisma.$transaction(async (tx) => {
-            const createdTenant = await tx.tenant.create({ data: dto });
-
-            await tx.theme.create({
-                data: {
-                    ...theme,
-                    tenantId: createdTenant.id,
-                },
-            });
-
-            return createdTenant;
-        });
-
-        return tenant;
+    async findAll(): Promise<Tenant[]> {
+        const raw = await this.prisma.tenant.findMany();
+        return raw.map((t) => this.mapToPrismaModel(t));
     }
 
-    async findAll(): Promise<any[]> {
-        return this.prisma.tenant.findMany();
+    async create(dto: CreateTenantDto): Promise<Tenant> {
+        const raw = await this.prisma.tenant.create({ data: dto as any });
+        return this.mapToPrismaModel(raw);
     }
 
-    async update(id: string, dto: any): Promise<any> {
-        return this.prisma.tenant.update({ where: { id }, data: dto });
+    async update(id: string, dto: UpdateTenantDto): Promise<Tenant> {
+        const raw = await this.prisma.tenant.update({ where: { id }, data: dto });
+        return this.mapToPrismaModel(raw);
     }
 
     async delete(id: string): Promise<boolean> {
@@ -81,16 +70,38 @@ export class TenantRepository {
         return !!deleted;
     }
 
-    async getHero(tenantId: string): Promise<any> {
-        return this.prisma.hero.findUnique({ where: { tenantId } });
+    private mapToPrismaModel(raw: any): Tenant {
+        return new Tenant(raw.id, raw.name, raw.themeName, {
+            metaTitle: raw.metaTitle,
+            metaDescription: raw.metaDescription,
+            phone: raw.phone,
+            phoneDisplay: raw.phoneDisplay,
+            instagram: raw.instagram,
+            whatsappMessage: raw.whatsappMessage,
+            footerDescription: raw.footerDescription,
+            footerNotice: raw.footerNotice,
+            status: raw.status,
+            createdAt: raw.createdAt,
+            updatedAt: raw.updatedAt,
+        });
     }
+}
 
-    async setHero(tenantId: string, hero: CreateTenantHeroDTO | UpdateTenantHeroDTO): Promise<any> {
-        return this.prisma.hero.update({ where: { tenantId }, data: hero });
-    }
-
-
-    async getFeatures(tenantId: string): Promise<any> {
-        return this.prisma.feature.findMany({ where: { tenantId } });
+/**
+ * Serviço utilitário para normalizar keys de tenant
+ * Responsabilidade única: Normalizar strings para busca
+ * 
+ * Uso: TenantRepository, TenantHostMiddleware
+ */
+@Injectable()
+export class TenantKeyNormalizer {
+    normalize(value: string): string {
+        return value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
     }
 }

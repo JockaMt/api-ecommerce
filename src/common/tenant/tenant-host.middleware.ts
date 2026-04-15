@@ -4,9 +4,11 @@ import {
     Injectable,
     NestMiddleware,
     NotFoundException,
+    Inject,
 } from "@nestjs/common";
-import { NextFunction, Request, Response } from "express";
-import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
+import type { NextFunction, Request, Response } from "express";
+import type { ITenantRepository } from "@/modules/tenant/repositories/interfaces";
+import { TenantKeyNormalizer } from "@/modules/tenant/repositories/tenant.repository";
 import { TenantContext } from "@/modules/tenant/tenant-context.type";
 
 type CacheItem = {
@@ -14,22 +16,23 @@ type CacheItem = {
     expiresAt: number;
 };
 
+/**
+ * TenantHostMiddleware
+ * 
+ * Mudança SOLID:
+ * - Antes: dependia de TenantRepository (implementação)
+ * - Agora: depende de ITenantRepository (interface) e reutiliza TenantKeyNormalizer
+ */
 @Injectable()
 export class TenantHostMiddleware implements NestMiddleware {
     private readonly cache = new Map<string, CacheItem>();
     private readonly ttlMs = 60_000;
 
-    constructor(private readonly tenantRepository: TenantRepository) { }
-
-    private normalizeTenantKey(value: string): string {
-        return value
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, "-")
-            .replace(/^-+|-+$/g, "");
-    }
+    constructor(
+        @Inject('ITenantRepository')
+        private readonly tenantRepository: ITenantRepository,
+        private readonly tenantKeyNormalizer: TenantKeyNormalizer
+    ) { }
 
     async use(req: Request, _res: Response, next: NextFunction) {
         if (this.isBypassedRoute(req.path)) {
@@ -99,13 +102,13 @@ export class TenantHostMiddleware implements NestMiddleware {
     private resolveTenantKey(host: string): string | null {
         if (host.endsWith(".localhost")) {
             const localTenant = host.replace(".localhost", "").trim();
-            return this.normalizeTenantKey(localTenant) || null;
+            return this.tenantKeyNormalizer.normalize(localTenant) || null;
         }
 
         const baseDomain = process.env.TENANT_BASE_DOMAIN?.trim().toLowerCase();
         if (baseDomain && host.endsWith(`.${baseDomain}`)) {
             const tenant = host.slice(0, host.length - (baseDomain.length + 1)).trim();
-            return this.normalizeTenantKey(tenant) || null;
+            return this.tenantKeyNormalizer.normalize(tenant) || null;
         }
 
         return null;

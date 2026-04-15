@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { TenantRepository } from '@/modules/tenant/repositories/tenant.repository';
+import { Injectable, Inject } from '@nestjs/common';
+import type { ITenantRepository } from '@/modules/tenant/repositories/interfaces';
 
 @Injectable()
 export class DeleteTenantUseCase {
-    constructor(private readonly tenantRepository: TenantRepository) { }
+    constructor(
+        @Inject('ITenantRepository')
+        private readonly tenantRepository: ITenantRepository
+    ) { }
 
-    async execute(id: string) {
-
+    async execute(id: string): Promise<{ message: string }> {
         const deleted = await this.tenantRepository.delete(id);
 
         if (!deleted) {

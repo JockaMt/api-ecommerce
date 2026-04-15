@@ -1,10 +1,25 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { TenantRepository } from '@/modules/tenant/repositories/tenant.repository';
+import { ConflictException, Injectable, Logger, Inject } from '@nestjs/common';
+import type { ITenantRepository, IThemeRepository } from '@/modules/tenant/repositories/interfaces';
 import { CreateTenantDto, CreateTenantThemeDTO } from '@/modules/tenant/dto';
+import { Tenant } from '@/modules/tenant/domain';
 
+/**
+ * CreateTenantUseCase
+ * 
+ * Mudança SOLID:
+ * - Antes: dependia de TenantRepository
+ * - Agora: depende de ITenantRepository e IThemeRepository (segregado)
+ * 
+ * Responsabilidade: Orquestrar criação de tenant com seu tema padrão
+ */
 @Injectable()
 export class CreateTenantUseCase {
-    constructor(private readonly tenantRepository: TenantRepository) { }
+    constructor(
+        @Inject('ITenantRepository')
+        private readonly tenantRepository: ITenantRepository,
+        @Inject('IThemeRepository')
+        private readonly themeRepository: IThemeRepository
+    ) { }
 
     private buildDefaultTheme(): Omit<CreateTenantThemeDTO, 'tenantId'> {
         return {
@@ -22,8 +37,7 @@ export class CreateTenantUseCase {
         };
     }
 
-    async execute(dto: CreateTenantDto) {
-
+    async execute(dto: CreateTenantDto): Promise<Tenant> {
         const exists = await this.tenantRepository.findByName(dto.name);
 
         if (exists) {
@@ -31,7 +45,14 @@ export class CreateTenantUseCase {
             throw new ConflictException("Uma empresa com esse nome já foi cadastrada.");
         }
 
-        const tenant = await this.tenantRepository.create(dto, this.buildDefaultTheme());
+        const tenant = await this.tenantRepository.create(dto);
+
+        // Criar tema padrão para o tenant
+        const defaultTheme = this.buildDefaultTheme();
+        await this.themeRepository.create({
+            ...defaultTheme,
+            tenantId: tenant.id,
+        } as CreateTenantThemeDTO & { tenantId: string });
 
         return tenant;
     }

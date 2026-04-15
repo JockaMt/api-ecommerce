@@ -7,6 +7,7 @@ import { CategoryController } from "@/modules/products/controllers/category.cont
 import { CreateProductUseCase } from "@/modules/products/use-cases";
 import { CategoryService } from "./services/category.service";
 import { CategoryRepository } from "./repositories/category.repository";
+import { IProductRepository } from "@/modules/products/repositories/interfaces";
 
 @Module({
     imports: [],
@@ -17,7 +18,12 @@ import { CategoryRepository } from "./repositories/category.repository";
         CategoryService,
         ProductRepository,
         CategoryRepository,
-        CreateProductUseCase
+        CreateProductUseCase,
+        // Registrar interface para injeção de dependência
+        {
+            provide: 'IProductRepository',
+            useClass: ProductRepository,
+        },
     ],
     exports: [ProductService, ProductRepository],
 })

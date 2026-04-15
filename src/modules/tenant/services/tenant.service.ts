@@ -19,7 +19,17 @@ import {
     CreateTenantHeroDTO,
     UpdateTenantHeroDTO
 } from "@/modules/tenant/dto";
+import { Tenant, Theme, Hero, Feature } from "@/modules/tenant/domain";
 
+/**
+ * TenantService - Facade para orquestrar use-cases de tenant
+ * 
+ * Nota: Esta classe é uma facade que compõe múltiplos use-cases.
+ * Idealmente, em refatorações futuras, pode ser segregado em:
+ * - TenantManagementService (CRUD de tenant)
+ * - TenantThemeService (CRUD de theme)
+ * - TenantHeroService (CRUD de hero e features)
+ */
 @Injectable()
 export class TenantService {
     constructor(
@@ -36,43 +46,43 @@ export class TenantService {
 
     ) { }
 
-    getCurrentTenant(id: string) {
+    async getCurrentTenant(id: string): Promise<Tenant | null> {
         return this.getCurrentTenantUseCase.execute(id);
     }
 
-    createTenant(dto: CreateTenantDto) {
+    async createTenant(dto: CreateTenantDto): Promise<Tenant> {
         return this.createTenantUseCase.execute(dto);
     }
 
-    listTenants() {
+    async listTenants(): Promise<Tenant[]> {
         return this.listTenantUseCase.execute();
     }
 
-    updateTenant(id: string, dto: UpdateTenantDto) {
+    async updateTenant(id: string, dto: UpdateTenantDto): Promise<Tenant> {
         return this.updateTenantUseCase.execute(id, dto);
     }
 
-    deleteTenant(id: string) {
+    async deleteTenant(id: string): Promise<{ message: string }> {
         return this.deleteTenantUseCase.execute(id);
     }
 
-    setTheme(tenantId: string, dto: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
+    async setTheme(tenantId: string, dto: CreateTenantThemeDTO | UpdateTenantThemeDTO): Promise<Theme> {
         return this.setThemeTenantUseCase.execute(tenantId, dto);
     }
 
-    getTheme(tenantId: string) {
+    async getTheme(tenantId: string): Promise<Theme | null> {
         return this.getThemeTenantUseCase.execute(tenantId);
     }
 
-    getHero(tenantId: string) {
+    async getHero(tenantId: string): Promise<Hero | null> {
         return this.getHeroTenantUseCase.execute(tenantId);
     }
 
-    setHero(tenantId: string, dto: CreateTenantHeroDTO | UpdateTenantHeroDTO) {
+    async setHero(tenantId: string, dto: CreateTenantHeroDTO | UpdateTenantHeroDTO): Promise<Hero> {
         return this.setHeroTenantUseCase.execute(tenantId, dto);
     }
 
-    getFeatures(tenantId: string) {
+    async getFeatures(tenantId: string): Promise<Feature[]> {
         return this.getFeaturesTenantUseCase.execute(tenantId);
     }
 }

@@ -334,5 +334,3 @@ const product = await this.productService.create(
 ## 📄 Licença
 
 Este projeto está sob a licença MIT.
-
-## Rotas
