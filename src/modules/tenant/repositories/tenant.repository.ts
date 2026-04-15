@@ -4,6 +4,26 @@ import { CreateTenantDto, UpdateTenantDto } from '@/modules/tenant/dto';
 import { Tenant } from '@/modules/tenant/domain';
 import { ITenantRepository } from './interfaces';
 
+
+/**
+ * Serviço utilitário para normalizar keys de tenant
+ * Responsabilidade única: Normalizar strings para busca
+ * 
+ * Uso: TenantRepository, TenantHostMiddleware
+ */
+@Injectable()
+export class TenantKeyNormalizer {
+    normalize(value: string): string {
+        return value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+}
+
 /**
  * Repositório refatorado para CRUD de Tenant
  * Responsabilidade única: Gerenciar entidade Tenant
@@ -84,24 +104,5 @@ export class TenantRepository implements ITenantRepository {
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
         });
-    }
-}
-
-/**
- * Serviço utilitário para normalizar keys de tenant
- * Responsabilidade única: Normalizar strings para busca
- * 
- * Uso: TenantRepository, TenantHostMiddleware
- */
-@Injectable()
-export class TenantKeyNormalizer {
-    normalize(value: string): string {
-        return value
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '');
     }
 }

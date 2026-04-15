@@ -23,7 +23,6 @@ import {
     TenantThemeController,
     TenantHeroController
 } from "@/modules/tenant/controllers";
-import { ITenantRepository, IThemeRepository, IHeroRepository, IFeatureRepository } from "@/modules/tenant/repositories/interfaces";
 
 @Module({
     imports: [],
@@ -69,6 +68,29 @@ import { ITenantRepository, IThemeRepository, IHeroRepository, IFeatureRepositor
         GetFeaturesTenantUseCase,
         SetHeroTenantUseCase
     ],
-    exports: [TenantService, TenantRepository, ThemeRepository, HeroRepository, FeatureRepository],
+    exports: [
+        TenantService,
+        TenantRepository,
+        ThemeRepository,
+        HeroRepository,
+        FeatureRepository,
+        TenantKeyNormalizer,
+        {
+            provide: 'ITenantRepository',
+            useClass: TenantRepository,
+        },
+        {
+            provide: 'IThemeRepository',
+            useClass: ThemeRepository,
+        },
+        {
+            provide: 'IHeroRepository',
+            useClass: HeroRepository,
+        },
+        {
+            provide: 'IFeatureRepository',
+            useClass: FeatureRepository,
+        },
+    ],
 })
 export class TenantModule { }

@@ -7,7 +7,6 @@ import { CategoryController } from "@/modules/products/controllers/category.cont
 import { CreateProductUseCase } from "@/modules/products/use-cases";
 import { CategoryService } from "./services/category.service";
 import { CategoryRepository } from "./repositories/category.repository";
-import { IProductRepository } from "@/modules/products/repositories/interfaces";
 
 @Module({
     imports: [],
