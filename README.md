@@ -41,9 +41,11 @@ Controller → Service → Use Case/Repository → Database
 ### Identificação de Tenant
 
 O tenant é identificado **pelo host da requisição** através do middleware `TenantHostMiddleware`:
-- Middleware extrai o tenant do host e o injeta no contexto da requisição
-- Decorador `@CurrentTenant()` fornece o tenant context nos controllers
-- Segurança: `tenantId` **não deve vir do cliente** (payload/header)
+- O middleware extrai o tenant do host e o injeta no contexto da requisição
+- O decorador `@CurrentTenant()` fornece o tenant verificado nos controllers
+- Segurança: `tenantId` **não deve vir do cliente** em payload, query ou header
+- No Swagger UI, use o header `x-forwarded-host` para simular o host quando necessário
+- Exemplo local: `http://loja1.localhost:3000` ou `http://template-store.localhost:3000`
 
 ### Estrutura de Pastas
 
@@ -101,38 +103,45 @@ Entidades suportadas no Prisma schema:
 ## 🔌 API Endpoints
 
 Base URL local: `http://localhost:3000`  
-Base URL produção: Vercel deployment
+Swagger: `http://localhost:3000/docs`
 
-### Admin (Gerenciamento)
+### Admin
 
-```
-GET    /admin                      # Lista informações admin
-GET    /admin/tenants              # Lista todos os tenants
-POST   /admin/tenants              # Cria novo tenant
-PUT    /admin/tenants/:id          # Atualiza tenant
-DELETE /admin/tenants/:id          # Deleta tenant
-```
-
-### Tenant (Dados da Loja)
-
-```
-GET  /:tenantId/tenant             # Informações do tenant
-GET  /:tenantId/theme              # Configuração de tema
-POST /:tenantId/theme              # Atualiza tema
+```text
+GET    /admin
+GET    /admin/tenants
+POST   /admin/tenants
+PUT    /admin/tenants
+DELETE /admin/tenants
 ```
 
-### Products (Catálogo)
+### Tenant público
 
-```
-GET  /:tenantId/products           # Lista produtos do tenant
-GET  /:tenantId/products/:name     # Busca por nome
-GET  /:tenantId/products/:category # Busca por categoria
-POST /:tenantId/products           # Cria novo produto
+```text
+GET  /tenant
 ```
 
-### Swagger
+### Tenant de configuração
 
-- 📖 Documentação interativa: `http://localhost:3000/docs`
+```text
+GET  /theme
+POST /theme
+GET  /hero
+POST /hero
+```
+
+### Catálogo
+
+```text
+GET  /products
+GET  /products/:name
+GET  /products/category/:category
+POST /products
+
+GET  /categories
+```
+
+> Observação: todas as rotas de tenant, tema, hero, produtos e categorias dependem do tenant resolvido pelo host da requisição.
 
 ## 📝 Exemplos de Payload
 
@@ -157,7 +166,6 @@ POST /:tenantId/products           # Cria novo produto
 
 ```json
 {
-  "tenantId": "tenant-uuid",
   "name": "Topo de Bolo Personalizado",
   "category": "lembrancas",
   "description": "Produto personalizado em impressao 3D",
@@ -211,6 +219,9 @@ Swagger em `http://localhost:3000/docs`
 |----------|-------------|--------|-----------|
 | `DATABASE_URL` | ✅ | - | URL de conexão do banco (SQLite) |
 | `PORT` | ❌ | 3000 | Porta do servidor |
+| `TENANT_BASE_DOMAIN` | ❌ | - | Domínio base para resolução de tenant em produção |
+| `CORS_ORIGINS` | ❌ | `http://localhost:3000` | Origens permitidas no CORS |
+| `NODE_ENV` | ❌ | `development` | Ambiente de execução |
 
 ### Exemplo .env
 
@@ -218,6 +229,8 @@ Swagger em `http://localhost:3000/docs`
 DATABASE_URL=file:./dev.db
 PORT=3000
 NODE_ENV=development
+TENANT_BASE_DOMAIN=seudominio.com
+CORS_ORIGINS=http://localhost:3000,http://localhost:3001
 ```
 
 ## 📦 Scripts NPM
@@ -280,6 +293,7 @@ Cada migration é um snapshot versionado das alterações.
 - Entry point: `api/index.ts`
 - Arquivo `vercel.json` configura rewrites e deployment
 - Bootstrap compartilhado em `src/bootstrap.ts` para local + serverless
+- O tenant continua sendo resolvido pelo host da requisição em produção
 
 ### Deploy automático
 
@@ -299,10 +313,10 @@ Configure no dashboard Vercel:
 
 ### Pontos-chave
 
-1. **Tenant por host**: Middleware extrai tenant automaticamente
-2. **Sem confiança no cliente**: `tenantId` nunca vem de payload/header
-3. **Contexto propagado**: Decorador `@CurrentTenant()` fornece tenant verificado
-4. **Isolamento**: Queries filtram automaticamente por tenant
+1. **Tenant por host**: o middleware extrai o tenant automaticamente
+2. **Sem confiança no cliente**: `tenantId` nunca vem de payload, query ou header
+3. **Contexto propagado**: `@CurrentTenant()` fornece o tenant verificado
+4. **Isolamento**: queries filtram automaticamente por tenant
 
 ### Boas práticas
 
