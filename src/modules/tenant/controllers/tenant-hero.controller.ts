@@ -1,4 +1,5 @@
-import { BadRequestException, Body, Controller, Get, Headers, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Get, Post } from "@nestjs/common";
+import { CurrentTenant } from "@/common/tenant/current-tenant.decorator";
 import { TenantService } from "@/modules/tenant/services/tenant.service";
 import {
     ApiBadRequestResponse,
@@ -12,6 +13,7 @@ import {
     getSchemaPath,
 } from "@nestjs/swagger";
 import { CreateTenantHeroDTO, UpdateTenantHeroDTO } from "@/modules/tenant/dto";
+import type { TenantContext } from "@/modules/tenant/tenant-context.type";
 
 @ApiTags("Tenant Hero")
 @ApiExtraModels(CreateTenantHeroDTO, UpdateTenantHeroDTO)
@@ -22,9 +24,9 @@ export class TenantHeroController {
     @Get()
     @ApiOperation({ summary: "Obtém os dados do hero do tenant" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant usado para carregar o hero",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiOkResponse({
         description: "Hero retornado com sucesso",
@@ -35,21 +37,17 @@ export class TenantHeroController {
             ],
         },
     })
-    @ApiBadRequestResponse({ description: "Header X-Tenant-ID ausente ou inválido" })
-    getHero(@Headers("x-tenant-id") tenantId: string) {
-        if (!tenantId) {
-            throw new BadRequestException("Header X-Tenant-ID é obrigatório");
-        }
-
-        return this.tenantService.getHero(tenantId);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
+    getHero(@CurrentTenant() tenant: TenantContext) {
+        return this.tenantService.getHero(tenant.id);
     }
 
     @Post()
     @ApiOperation({ summary: "Cria o hero do tenant" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para criar o hero",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiBody({
         description: "Payload para criação de hero. Campos parciais são aceitos no schema de update.",
@@ -65,16 +63,13 @@ export class TenantHeroController {
         schema: { $ref: getSchemaPath(CreateTenantHeroDTO) },
     })
     @ApiBadRequestResponse({
-        description: "Header X-Tenant-ID ausente ou hero já cadastrado para o tenant",
+        description: "Host do tenant ausente ou hero ja cadastrado para o tenant",
     })
-    async createHero(@Headers("x-tenant-id") tenantId: string, @Body() dto: CreateTenantHeroDTO | UpdateTenantHeroDTO) {
-        if (!tenantId) {
-            throw new BadRequestException("Header X-Tenant-ID é obrigatório");
-        }
-        const existingHero = await this.tenantService.getHero(tenantId);
+    async createHero(@CurrentTenant() tenant: TenantContext, @Body() dto: CreateTenantHeroDTO | UpdateTenantHeroDTO) {
+        const existingHero = await this.tenantService.getHero(tenant.id);
         if (existingHero) {
             throw new BadRequestException("Hero já existe para este tenant");
         }
-        return this.tenantService.setHero(tenantId, dto);
+        return this.tenantService.setHero(tenant.id, dto);
     }
 }

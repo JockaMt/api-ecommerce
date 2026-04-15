@@ -6,6 +6,16 @@ import { CreateTenantHeroDTO, CreateTenantThemeDTO, UpdateTenantHeroDTO, UpdateT
 export class TenantRepository {
     constructor(private readonly prisma: PrismaService) { }
 
+    private normalizeTenantKey(value: string): string {
+        return value
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+    }
+
     async getTheme(tenantId: string): Promise<any> {
         return this.prisma.theme.findFirst({ where: { tenantId } });
     }
@@ -24,6 +34,21 @@ export class TenantRepository {
 
     async findByName(name: string): Promise<any> {
         return this.prisma.tenant.findUnique({ where: { name } });
+    }
+
+    async findByHostKey(hostKey: string): Promise<any> {
+        const normalizedHostKey = this.normalizeTenantKey(hostKey);
+        if (!normalizedHostKey) {
+            return null;
+        }
+
+        const exact = await this.findByName(hostKey);
+        if (exact) {
+            return exact;
+        }
+
+        const tenants = await this.findAll();
+        return tenants.find((tenant) => this.normalizeTenantKey(tenant.name) === normalizedHostKey) ?? null;
     }
 
     async create(dto: any): Promise<any> {

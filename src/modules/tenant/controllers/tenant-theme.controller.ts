@@ -1,6 +1,8 @@
-import { Body, Controller, Get, Headers, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
+import { CurrentTenant } from "@/common/tenant/current-tenant.decorator";
 import { TenantService } from "@/modules/tenant/services/tenant.service";
 import { CreateTenantThemeDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
+import type { TenantContext } from "@/modules/tenant/tenant-context.type";
 import {
     ApiBadRequestResponse,
     ApiBody,
@@ -22,9 +24,9 @@ export class TenantThemeController {
     @Post()
     @ApiOperation({ summary: "Cria ou atualiza o tema do tenant" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para salvar o tema",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiBody({
         description: "Payload para criação/atualização do tema do tenant",
@@ -36,21 +38,21 @@ export class TenantThemeController {
         },
     })
     @ApiCreatedResponse({ description: "Tema salvo com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou payload inválido" })
-    setTheme(@Headers("x-tenant-id") tenantId: string, @Body() dto: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
-        return this.tenantService.setTheme(tenantId, dto);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou payload invalido" })
+    setTheme(@CurrentTenant() tenant: TenantContext, @Body() dto: CreateTenantThemeDTO | UpdateTenantThemeDTO) {
+        return this.tenantService.setTheme(tenant.id, dto);
     }
 
     @Get()
     @ApiOperation({ summary: "Obtém o tema do tenant" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para recuperar o tema",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiOkResponse({ description: "Tema retornado com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou inválido" })
-    getTheme(@Headers("x-tenant-id") tenantId: string) {
-        return this.tenantService.getTheme(tenantId);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
+    getTheme(@CurrentTenant() tenant: TenantContext) {
+        return this.tenantService.getTheme(tenant.id);
     }
 }

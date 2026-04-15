@@ -1,7 +1,9 @@
-import { Body, Controller, Delete, Get, Headers, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Post, Put } from "@nestjs/common";
+import { CurrentTenant } from "@/common/tenant/current-tenant.decorator";
 import { TenantService } from "@/modules/tenant/services/tenant.service";
 import { CreateTenantDto } from "@/modules/tenant/dto/create-tenant.dto";
 import { UpdateTenantDto } from "@/modules/tenant/dto/update-tenant.dto";
+import type { TenantContext } from "@/modules/tenant/tenant-context.type";
 import {
     ApiBadRequestResponse,
     ApiBody,
@@ -36,27 +38,27 @@ export class TenantController {
     @Put()
     @ApiOperation({ summary: "Atualiza um tenant existente" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant a ser atualizado",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiBody({ type: UpdateTenantDto, description: "Dados para atualização parcial do tenant" })
     @ApiOkResponse({ description: "Tenant atualizado com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou payload inválido" })
-    updateTenant(@Headers("x-tenant-id") id: string, @Body() dto: UpdateTenantDto) {
-        return this.tenantService.updateTenant(id, dto);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou payload invalido" })
+    updateTenant(@CurrentTenant() tenant: TenantContext, @Body() dto: UpdateTenantDto) {
+        return this.tenantService.updateTenant(tenant.id, dto);
     }
 
     @Delete()
     @ApiOperation({ summary: "Remove um tenant" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant a ser removido",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiOkResponse({ description: "Tenant removido com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou inválido" })
-    deleteTenant(@Headers("x-tenant-id") id: string) {
-        return this.tenantService.deleteTenant(id);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
+    deleteTenant(@CurrentTenant() tenant: TenantContext) {
+        return this.tenantService.deleteTenant(tenant.id);
     }
 }

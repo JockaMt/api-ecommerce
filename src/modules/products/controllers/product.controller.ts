@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Headers, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { CurrentTenant } from "@/common/tenant/current-tenant.decorator";
 import { ProductService } from "@/modules/products/services/product.service";
+import type { TenantContext } from "@/modules/tenant/tenant-context.type";
 import { CreateProductDto } from "../dto/create-product.dto";
 import {
     ApiBadRequestResponse,
@@ -20,9 +22,9 @@ export class ProductController {
     @Get(":name")
     @ApiOperation({ summary: "Busca um produto por nome" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para isolar os produtos",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiParam({
         name: "name",
@@ -30,35 +32,35 @@ export class ProductController {
         example: "Camiseta Estampada",
     })
     @ApiOkResponse({ description: "Produto retornado com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou inválido" })
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
     getProduct(
         @Param("name") name: string,
-        @Headers("x-tenant-id") tenantId: string
+        @CurrentTenant() tenant: TenantContext
     ) {
-        return this.productService.getProduct(name, tenantId);
+        return this.productService.getProduct(name, tenant.id);
     }
 
     @Get()
     @ApiOperation({ summary: "Lista os produtos do tenant" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para listar os produtos",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiOkResponse({ description: "Lista de produtos retornada com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou inválido" })
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
     listProducts(
-        @Headers("x-tenant-id") tenantId: string
+        @CurrentTenant() tenant: TenantContext
     ) {
-        return this.productService.listProducts(tenantId);
+        return this.productService.listProducts(tenant.id);
     }
 
     @Get("category/:category")
     @ApiOperation({ summary: "Lista produtos por categoria" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para filtrar produtos por categoria",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiParam({
         name: "category",
@@ -66,12 +68,12 @@ export class ProductController {
         example: "Roupas",
     })
     @ApiOkResponse({ description: "Produtos da categoria retornados com sucesso" })
-    @ApiBadRequestResponse({ description: "Header x-tenant-id ausente ou inválido" })
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
     listProductsByCategory(
         @Param("category") category: string,
-        @Headers("x-tenant-id") tenantId: string
+        @CurrentTenant() tenant: TenantContext
     ) {
-        return this.productService.listProductsByCategory(category, tenantId);
+        return this.productService.listProductsByCategory(category, tenant.id);
     }
 
     @Post()

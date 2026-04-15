@@ -1,5 +1,7 @@
-import { BadRequestException, Controller, Get, Headers } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
+import { CurrentTenant } from "@/common/tenant/current-tenant.decorator";
 import { TenantService } from "@/modules/tenant/services/tenant.service";
+import type { TenantContext } from "@/modules/tenant/tenant-context.type";
 import {
     ApiBadRequestResponse,
     ApiHeader,
@@ -16,17 +18,13 @@ export class UserTenantController {
     @Get()
     @ApiOperation({ summary: "Obtém os dados do tenant atual" })
     @ApiHeader({
-        name: "x-tenant-id",
-        required: true,
-        description: "Identificador do tenant para recuperar os dados públicos",
+        name: "x-forwarded-host",
+        required: false,
+        description: "Host do tenant para testes no Swagger UI (ex.: loja1.localhost:3000)",
     })
     @ApiOkResponse({ description: "Dados do tenant retornados com sucesso" })
-    @ApiBadRequestResponse({ description: "Header X-Tenant-ID é obrigatório" })
-    getTenantFromHeader(@Headers("x-tenant-id") tenantId?: string) {
-        if (!tenantId) {
-            throw new BadRequestException("Header X-Tenant-ID é obrigatório");
-        }
-
-        return this.tenantService.getCurrentTenant(tenantId);
+    @ApiBadRequestResponse({ description: "Host do tenant ausente ou invalido" })
+    getCurrentTenant(@CurrentTenant() tenant: TenantContext) {
+        return this.tenantService.getCurrentTenant(tenant.id);
     }
 }

@@ -5,6 +5,10 @@ import setupSwagger from './config/swagger.config';
 
 export async function createNestApp(): Promise<INestApplication> {
     const app = await NestFactory.create(AppModule);
+    const httpAdapter = app.getHttpAdapter();
+    const httpInstance = httpAdapter.getInstance() as { set?: (key: string, value: unknown) => void };
+    httpInstance.set?.('trust proxy', 1);
+
     const corsOrigins = (process.env.CORS_ORIGINS ?? 'http://localhost:3000')
         .split(',')
         .map((origin) => origin.trim())
@@ -13,7 +17,7 @@ export async function createNestApp(): Promise<INestApplication> {
     app.enableCors({
         origin: corsOrigins,
         methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Tenant-ID'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Forwarded-Host'],
         credentials: false,
     });
 
