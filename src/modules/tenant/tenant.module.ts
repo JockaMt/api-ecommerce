@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
-import { TenantController, UserTenantController, SetTenantThemeController } from "@/modules/tenant/controllers";
-import { TenantService } from "./services/tenant.service";
-import { TenantRepository } from "./repositories/tenant.repository";
+import { TenantService } from "@/modules/tenant/services/tenant.service";
+import { TenantRepository } from "@/modules/tenant/repositories/tenant.repository";
+import { PrismaService } from "@/modules/prisma/service/prisma.service";
 import {
     CreateTenantUseCase,
     DeleteTenantUseCase,
@@ -11,13 +11,24 @@ import {
     SetThemeTenantUseCase,
     ListTenantUseCase,
     GetHeroTenantUseCase,
-    GetFeaturesTenantUseCase
+    GetFeaturesTenantUseCase,
+    SetHeroTenantUseCase
 } from "@/modules/tenant/use-cases";
-import { PrismaService } from "../prisma/service/prisma.service";
+import {
+    TenantController,
+    UserTenantController,
+    TenantThemeController,
+    TenantHeroController
+} from "@/modules/tenant/controllers";
 
 @Module({
     imports: [],
-    controllers: [TenantController, UserTenantController, SetTenantThemeController],
+    controllers: [
+        TenantController,
+        UserTenantController,
+        TenantThemeController,
+        TenantHeroController
+    ],
     providers: [
         PrismaService,
         TenantService,
@@ -30,7 +41,8 @@ import { PrismaService } from "../prisma/service/prisma.service";
         SetThemeTenantUseCase,
         ListTenantUseCase,
         GetHeroTenantUseCase,
-        GetFeaturesTenantUseCase
+        GetFeaturesTenantUseCase,
+        SetHeroTenantUseCase
     ],
     exports: [TenantService, TenantRepository],
 })

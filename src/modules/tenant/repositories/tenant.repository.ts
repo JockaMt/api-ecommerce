@@ -1,6 +1,6 @@
 import { PrismaService } from "@/modules/prisma/service/prisma.service";
 import { Injectable } from "@nestjs/common";
-import { CreateTenantThemeDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
+import { CreateTenantHeroDTO, CreateTenantThemeDTO, UpdateTenantHeroDTO, UpdateTenantThemeDTO } from "@/modules/tenant/dto";
 
 @Injectable()
 export class TenantRepository {
@@ -44,8 +44,13 @@ export class TenantRepository {
     }
 
     async getHero(tenantId: string): Promise<any> {
-        return this.prisma.product.findFirst({ where: { tenantId } });
+        return this.prisma.hero.findUnique({ where: { tenantId } });
     }
+
+    async setHero(tenantId: string, hero: CreateTenantHeroDTO | UpdateTenantHeroDTO): Promise<any> {
+        return this.prisma.hero.update({ where: { tenantId }, data: hero });
+    }
+
 
     async getFeatures(tenantId: string): Promise<any> {
         return this.prisma.feature.findMany({ where: { tenantId } });

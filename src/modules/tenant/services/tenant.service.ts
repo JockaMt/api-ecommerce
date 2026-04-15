@@ -8,13 +8,16 @@ import {
     SetThemeTenantUseCase,
     ListTenantUseCase,
     GetHeroTenantUseCase,
-    GetFeaturesTenantUseCase,
+    SetHeroTenantUseCase,
+    GetFeaturesTenantUseCase
 } from "@/modules/tenant/use-cases";
 import {
     UpdateTenantDto,
     CreateTenantDto,
     CreateTenantThemeDTO,
-    UpdateTenantThemeDTO
+    UpdateTenantThemeDTO,
+    CreateTenantHeroDTO,
+    UpdateTenantHeroDTO
 } from "@/modules/tenant/dto";
 
 @Injectable()
@@ -28,6 +31,7 @@ export class TenantService {
         private readonly setThemeTenantUseCase: SetThemeTenantUseCase,
         private readonly listTenantUseCase: ListTenantUseCase,
         private readonly getHeroTenantUseCase: GetHeroTenantUseCase,
+        private readonly setHeroTenantUseCase: SetHeroTenantUseCase,
         private readonly getFeaturesTenantUseCase: GetFeaturesTenantUseCase
 
     ) { }
@@ -62,6 +66,10 @@ export class TenantService {
 
     getHero(tenantId: string) {
         return this.getHeroTenantUseCase.execute(tenantId);
+    }
+
+    setHero(tenantId: string, dto: CreateTenantHeroDTO | UpdateTenantHeroDTO) {
+        return this.setHeroTenantUseCase.execute(tenantId, dto);
     }
 
     getFeatures(tenantId: string) {
