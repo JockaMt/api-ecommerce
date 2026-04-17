@@ -5,32 +5,23 @@
 export class Hero {
     tenantId: string;
     badge?: string;
-    titleLine1?: string;
-    titleLine2?: string;
-    titleHighlight?: string;
+    title?: string;
+    highlightWord?: string;
     description?: string;
-    buttonPrimary?: string;
-    buttonSecondary?: string;
 
     constructor(
         tenantId: string,
         data?: {
             badge?: string;
-            titleLine1?: string;
-            titleLine2?: string;
-            titleHighlight?: string;
+            title?: string;
+            highlightWord?: string;
             description?: string;
-            buttonPrimary?: string;
-            buttonSecondary?: string;
         }
     ) {
         this.tenantId = tenantId;
         this.badge = data?.badge;
-        this.titleLine1 = data?.titleLine1;
-        this.titleLine2 = data?.titleLine2;
-        this.titleHighlight = data?.titleHighlight;
+        this.title = data?.title;
+        this.highlightWord = data?.highlightWord;
         this.description = data?.description;
-        this.buttonPrimary = data?.buttonPrimary;
-        this.buttonSecondary = data?.buttonSecondary;
     }
 }

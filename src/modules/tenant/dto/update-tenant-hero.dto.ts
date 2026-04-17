@@ -10,30 +10,15 @@ export class UpdateTenantHeroDTO {
     @ApiPropertyOptional({ description: "First line of the hero title", example: "Coleção de Inverno" })
     @IsOptional()
     @IsString()
-    titleLine1?: string;
-
-    @ApiPropertyOptional({ description: "Second line of the hero title", example: "com até" })
-    @IsOptional()
-    @IsString()
-    titleLine2?: string;
+    title?: string;
 
     @ApiPropertyOptional({ description: "Highlighted text in the hero title", example: "50% OFF" })
     @IsOptional()
     @IsString()
-    titleHighlight?: string;
+    highlightWord?: string;
 
     @ApiPropertyOptional({ description: "Main hero description text", example: "Aproveite ofertas por tempo limitado em produtos selecionados." })
     @IsOptional()
     @IsString()
     description?: string;
-
-    @ApiPropertyOptional({ description: "Primary CTA button label", example: "Comprar Agora" })
-    @IsOptional()
-    @IsString()
-    buttonPrimary?: string;
-
-    @ApiPropertyOptional({ description: "Secondary CTA button label", example: "Ver Ofertas" })
-    @IsOptional()
-    @IsString()
-    buttonSecondary?: string;
 }

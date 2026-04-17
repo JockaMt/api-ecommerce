@@ -39,12 +39,9 @@ export class HeroRepository implements IHeroRepository {
     private mapToPrismaModel(raw: any): Hero {
         return new Hero(raw.tenantId, {
             badge: raw.badge,
-            titleLine1: raw.titleLine1,
-            titleLine2: raw.titleLine2,
-            titleHighlight: raw.titleHighlight,
+            title: raw.title,
+            highlightWord: raw.highlightWord,
             description: raw.description,
-            buttonPrimary: raw.buttonPrimary,
-            buttonSecondary: raw.buttonSecondary,
         });
     }
 }

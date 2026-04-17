@@ -94,12 +94,9 @@ model Theme {
 model Hero {
   tenantId        String  @id
   badge           String?
-  titleLine1      String?
-  titleLine2      String?
-  titleHighlight  String?
+  title           String?
+  highlightWord   String?
   description     String?
-  buttonPrimary   String?
-  buttonSecondary String?
 
   // Relations
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
