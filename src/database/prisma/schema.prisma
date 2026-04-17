@@ -14,20 +14,12 @@ datasource db {
 }
 
 model Tenant {
-  id                String   @id @default(uuid())
-  name              String   @unique
-  themeName         String
-  metaTitle         String?
-  metaDescription   String?
-  phone             String?
-  phoneDisplay      String?
-  instagram         String?
-  whatsappMessage   String?
-  footerDescription String?
-  footerNotice      String?
-  status            String   @default("active")
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  id        String   @id @default(uuid())
+  name      String   @unique
+  themeName String
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   products      Product[]
@@ -36,8 +28,24 @@ model Tenant {
   features      Feature[]
   users         User[]
   contactFields contactFields[]
+  storeSettings StoreSettings?
 
   @@index([status])
+}
+
+model StoreSettings {
+  tenantId          String  @id
+  metaTitle         String?
+  metaDescription   String?
+  phone             String?
+  phoneDisplay      String?
+  instagram         String?
+  whatsappMessage   String?
+  footerDescription String?
+  footerNotice      String?
+
+  // Relations
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Product {

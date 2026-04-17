@@ -28,7 +28,7 @@ export class UserTenantController {
         const tenantData = await this.tenantService.getCurrentTenant(tenant.id);
 
         if (!tenantData) {
-            return tenantData;
+            return null;
         }
 
         const { id: _id, ...publicTenantData } = tenantData;

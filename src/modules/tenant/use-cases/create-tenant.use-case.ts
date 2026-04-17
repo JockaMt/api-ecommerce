@@ -37,6 +37,19 @@ export class CreateTenantUseCase {
         };
     }
 
+    private buildDefaultStoreSettings(): NonNullable<CreateTenantDto['storeSettings']> {
+        return {
+            metaTitle: 'Template Store | E-commerce Base',
+            metaDescription: 'Seu e-commerce premium pronto para vendas.',
+            phone: '55991245437',
+            phoneDisplay: '991245437',
+            instagram: '@jockadev',
+            whatsappMessage: 'Olá, vim pelo site e quero saber mais sobre os produtos!',
+            footerDescription: 'Sua loja de demonstração definitiva para atrair clientes. Design profissional, ágil e customizável.',
+            footerNotice: 'Feito com paixão. Envio para todo o Brasil.',
+        };
+    }
+
     async execute(dto: CreateTenantDto): Promise<Tenant> {
         const exists = await this.tenantRepository.findByName(dto.name);
 
@@ -45,7 +58,10 @@ export class CreateTenantUseCase {
             throw new ConflictException("Uma empresa com esse nome já foi cadastrada.");
         }
 
-        const tenant = await this.tenantRepository.create(dto);
+        const tenant = await this.tenantRepository.create({
+            ...dto,
+            storeSettings: dto.storeSettings ?? this.buildDefaultStoreSettings(),
+        });
 
         // Criar tema padrão para o tenant
         const defaultTheme = this.buildDefaultTheme();
