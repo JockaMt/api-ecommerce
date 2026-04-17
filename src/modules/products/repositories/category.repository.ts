@@ -1,5 +1,7 @@
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "@/modules/prisma/service/prisma.service";
 
+@Injectable()
 export class CategoryRepository {
 
     constructor(private readonly prismaService: PrismaService) { }
@@ -12,7 +14,7 @@ export class CategoryRepository {
             select: {
                 category: true
             },
-            distinct: ["category"]
+            distinct: ['category']
         });
         return categories.map((p) => p.category);
     }
