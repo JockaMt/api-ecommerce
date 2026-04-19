@@ -2,6 +2,8 @@
 
 API em NestJS para e-commerce **multi-tenant**, com Prisma + SQLite, documentação Swagger e deploy em Vercel.
 
+![My Skills](https://skillicons.dev/icons?i=nestjs,prisma,sqlite,vercel)
+
 ## 📋 Visão Geral
 
 Sistema completo de e-commerce composto por:
