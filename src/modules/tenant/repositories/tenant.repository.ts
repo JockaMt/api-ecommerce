@@ -1,7 +1,7 @@
 import { PrismaService } from '@/modules/prisma/service/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateTenantDto, UpdateTenantDto } from '@/modules/tenant/dto';
-import { Tenant } from '@/modules/tenant/domain';
+import { StoreSettings, Tenant } from '@/modules/tenant/domain';
 import { ITenantRepository } from './interfaces';
 
 
@@ -42,12 +42,18 @@ export class TenantRepository implements ITenantRepository {
     ) { }
 
     async findById(id: string): Promise<Tenant | null> {
-        const raw = await this.prisma.tenant.findUnique({ where: { id } });
+        const raw = await this.prisma.tenant.findUnique({
+            where: { id },
+            include: { storeSettings: true },
+        });
         return raw ? this.mapToPrismaModel(raw) : null;
     }
 
     async findByName(name: string): Promise<Tenant | null> {
-        const raw = await this.prisma.tenant.findUnique({ where: { name } });
+        const raw = await this.prisma.tenant.findUnique({
+            where: { name },
+            include: { storeSettings: true },
+        });
         return raw ? this.mapToPrismaModel(raw) : null;
     }
 
@@ -71,17 +77,47 @@ export class TenantRepository implements ITenantRepository {
     }
 
     async findAll(): Promise<Tenant[]> {
-        const raw = await this.prisma.tenant.findMany();
+        const raw = await this.prisma.tenant.findMany({ include: { storeSettings: true } });
         return raw.map((t) => this.mapToPrismaModel(t));
     }
 
     async create(dto: CreateTenantDto): Promise<Tenant> {
-        const raw = await this.prisma.tenant.create({ data: dto as any });
+        const { storeSettings, ...tenantData } = dto;
+        const raw = await this.prisma.tenant.create({
+            data: {
+                ...tenantData,
+                ...(storeSettings
+                    ? {
+                        storeSettings: {
+                            create: storeSettings,
+                        },
+                    }
+                    : {}),
+            },
+            include: { storeSettings: true },
+        });
         return this.mapToPrismaModel(raw);
     }
 
     async update(id: string, dto: UpdateTenantDto): Promise<Tenant> {
-        const raw = await this.prisma.tenant.update({ where: { id }, data: dto });
+        const { storeSettings, ...tenantData } = dto;
+        const raw = await this.prisma.tenant.update({
+            where: { id },
+            data: {
+                ...tenantData,
+                ...(storeSettings
+                    ? {
+                        storeSettings: {
+                            upsert: {
+                                create: storeSettings,
+                                update: storeSettings,
+                            },
+                        },
+                    }
+                    : {}),
+            },
+            include: { storeSettings: true },
+        });
         return this.mapToPrismaModel(raw);
     }
 
@@ -92,17 +128,19 @@ export class TenantRepository implements ITenantRepository {
 
     private mapToPrismaModel(raw: any): Tenant {
         return new Tenant(raw.id, raw.name, raw.themeName, {
-            metaTitle: raw.metaTitle,
-            metaDescription: raw.metaDescription,
-            phone: raw.phone,
-            phoneDisplay: raw.phoneDisplay,
-            instagram: raw.instagram,
-            whatsappMessage: raw.whatsappMessage,
-            footerDescription: raw.footerDescription,
-            footerNotice: raw.footerNotice,
             status: raw.status,
             createdAt: raw.createdAt,
             updatedAt: raw.updatedAt,
+            storeSettings: raw.storeSettings ? new StoreSettings({
+                metaTitle: raw.storeSettings.metaTitle,
+                metaDescription: raw.storeSettings.metaDescription,
+                phone: raw.storeSettings.phone,
+                phoneDisplay: raw.storeSettings.phoneDisplay,
+                instagram: raw.storeSettings.instagram,
+                whatsappMessage: raw.storeSettings.whatsappMessage,
+                footerDescription: raw.storeSettings.footerDescription,
+                footerNotice: raw.storeSettings.footerNotice,
+            }) : undefined,
         });
     }
 }

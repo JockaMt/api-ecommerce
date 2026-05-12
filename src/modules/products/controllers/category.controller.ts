@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Logger } from "@nestjs/common";
 import { CurrentTenant } from "@/common/tenant/current-tenant.decorator";
 import { CategoryService } from "@/modules/products/services/category.service";
 import type { TenantContext } from "@/modules/tenant/tenant-context.type";

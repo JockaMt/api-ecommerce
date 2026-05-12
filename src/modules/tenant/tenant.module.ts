@@ -21,7 +21,7 @@ import {
     TenantController,
     UserTenantController,
     TenantThemeController,
-    TenantHeroController
+    TenantHeroController,
 } from "@/modules/tenant/controllers";
 
 @Module({
@@ -30,7 +30,7 @@ import {
         TenantController,
         UserTenantController,
         TenantThemeController,
-        TenantHeroController
+        TenantHeroController,
     ],
     providers: [
         PrismaService,
